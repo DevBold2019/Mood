@@ -45,7 +45,6 @@ public class contactsActivity extends AppCompatActivity {
         toolbar=findViewById(R.id.tool);
 
         setSupportActionBar(toolbar);
-
         Objects.requireNonNull(getSupportActionBar()).setTitle("Contacts");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -69,7 +68,7 @@ public class contactsActivity extends AppCompatActivity {
             name=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
              number=cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
 
-            ContactsModal contactsModal = new ContactsModal(""+name,""+number,R.drawable.contacts);
+            ContactsModal contactsModal = new ContactsModal(""+name,""+number,R.drawable.group);
             contactsModalList.add(contactsModal);
 
         }

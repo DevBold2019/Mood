@@ -62,9 +62,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         final List<WalkObject>walkObjectList=new ArrayList<>();
-        walkObjectList.add(new WalkObject("Friends","Talk to them from anywhere at anytime",R.drawable.chatthree));
-        walkObjectList.add(new WalkObject("Lost Chats?","With mood you can backup your chats",R.drawable.chattwo));
-        walkObjectList.add(new WalkObject("Start using Mood","Talk &have fu n with Mood",R.drawable.chat));
+        walkObjectList.add(new WalkObject("Friends","Talk to them \nfrom anywhere at anytime",R.drawable.chatthree));
+        walkObjectList.add(new WalkObject("Lost Chats?","With mood you can backup your chats\nhide for privacy",R.drawable.chattwo));
+        walkObjectList.add(new WalkObject("Start using Mood","Have fun with Mood",R.drawable.group));
 
         WalkAdapter walkAdapter=new WalkAdapter(MainActivity.this,walkObjectList);
 

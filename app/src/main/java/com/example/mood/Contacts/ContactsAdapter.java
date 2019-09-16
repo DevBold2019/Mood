@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -44,7 +45,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
         holder.textView.setText(contactsModal.getName());
         holder.textView1.setText(contactsModal.getNumber());
         holder.circleImageView.setImageResource(contactsModal.getPic());
-        holder.constraintLayout.setOnClickListener(new View.OnClickListener() {
+        holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -76,7 +77,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView textView,textView1;
-        ConstraintLayout constraintLayout;
+        RelativeLayout relativeLayout;
         CircleImageView circleImageView;
 
         public ViewHolder(@NonNull View itemView) {
@@ -86,7 +87,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             textView=(TextView) itemView.findViewById(R.id.contName);
             textView1=(TextView) itemView.findViewById(R.id.contNumber);
             circleImageView=itemView.findViewById(R.id.contPic);
-            constraintLayout=(ConstraintLayout) itemView.findViewById(R.id.cons);
+            relativeLayout =(RelativeLayout) itemView.findViewById(R.id.relative);
 
         }
     }
