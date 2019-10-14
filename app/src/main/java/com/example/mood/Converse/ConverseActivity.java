@@ -4,6 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.app.PendingIntent;
@@ -23,10 +25,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.example.mood.Fragments.testingAdapter;
+import com.example.mood.Fragments.testingModel;
 import com.example.mood.R;
 import com.example.mood.profile.profileActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -45,7 +50,7 @@ import java.util.Locale;
 public class ConverseActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    ListView listView;
+    RecyclerView listView;
 
     List<converseModel> listModel;
 
@@ -60,14 +65,17 @@ public class ConverseActivity extends AppCompatActivity {
     FloatingActionButton floatingActionButton;
     converseAdapter converse;
 
-    Cursor cursor, c,curse;
-    ContentResolver cr,cre;
+
+    Cursor cursor,curse;
+    ContentResolver cr;
 
     public String namba;
-    long time;
-    String finalDate;
     public String  ContactName,contactId;
-    converseModel conv2,conv1,conv;
+    converseModel conv2;
+
+    testingModel test;
+    List<testingModel>testList;
+    testingAdapter adapter1;
 
     //for inbox
     String body,address;
@@ -112,9 +120,12 @@ public class ConverseActivity extends AppCompatActivity {
 
         connect = getAdd;
 
-
         floatingActionButton = findViewById(R.id.sending);
+
         listView = findViewById(R.id.chatListView);
+        listView.setLayoutManager(new LinearLayoutManager(this));
+        listView.setHasFixedSize(true);
+
         e1 = findViewById(R.id.myEDit);
 
 
@@ -138,66 +149,16 @@ public class ConverseActivity extends AppCompatActivity {
 
 
 
-
-
-        listModel = new ArrayList<>();
-        converse = new converseAdapter(ConverseActivity.this,listModel);
+       // listModel = new ArrayList<>();
+        //converse = new converseAdapter(ConverseActivity.this,listModel);
 
         ///////////////getting the sent messages///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        loadSms();
 
 
-        Uri uri=Uri.parse("content://sms/inbox");
 
-        cr=getApplicationContext().getContentResolver();
-        cursor=cr.query(uri,null,"thread_id="+connect,null,"date asc");
-
-        if (cursor !=null){
-
-            cursor.moveToFirst();
-
-        }
-
-        for (int i=0; i<cursor.getCount(); i++){
-
-            body=cursor.getString(cursor.getColumnIndexOrThrow("body"));
-            address=cursor.getString(cursor.getColumnIndexOrThrow("address"));
-            date=cursor.getLong(cursor.getColumnIndexOrThrow("date"));
-
-            add=address;
-
-            Date date1=new Date(date); // accept long value.
-             tarehe = date1.toString();
-            System.out.println(date1);
-
-
-            converseModel cmd=new converseModel();
-
-            cmd.setReceived_msg(body);
-            cmd.setLeft(true);
-            cmd.setTime_receivd(tarehe);
-            cmd.setName_sender(address);
-
-            timeGot=cmd.getTime_receivd();
-
-            listModel.add(cmd);
-
-            getSupportActionBar().setSubtitle(address);
-            getSupportActionBar().setTitle(address);
-
-
-            cursor.moveToNext();
-
-        }
-        if (cursor==null){
-
-            Toast.makeText(getApplicationContext(),"No reply from this contact",Toast.LENGTH_LONG).show();
-            cursor.close();
-
-        }
-
-
-        cre=getApplicationContext().getContentResolver();
+       /* cre=getApplicationContext().getContentResolver();
         Uri uri1=Uri.parse("content://sms/sent");
 
         c=cre.query(uri1,null,"thread_id="+connect,null,"date asc");
@@ -235,54 +196,14 @@ public class ConverseActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"No reply from this contact",Toast.LENGTH_LONG).show();
             c.close();
 
-        }
-
-
-        // encode the phone number and build the filter URI
-        Uri contactUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(address));
-
-        ContentResolver ctrs=getApplicationContext().getContentResolver();
-
-        curse = ctrs.query(contactUri, null, null, null,null);
-
-        if (curse !=null) {
-
-            curse.moveToFirst();
-
-        }
-
-        for (int d=0; d<curse.getCount(); d++){
-
-
-            // Get values from contacts database:
-            ContactName = curse.getString(curse.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
-            contactId=curse.getString(curse.getColumnIndex(ContactsContract.PhoneLookup._ID));
-
-            if (ContactName==null){
-
-
-
-            }else {
-
-                getSupportActionBar().setTitle(ContactName);
-
-
-            }
-            curse.moveToNext();
-
-        }
-        if (curse==null){
-
-            Toast.makeText(getApplicationContext(),"Contact doesn't exist",Toast.LENGTH_LONG).show();
-
-            curse.close();
-        }
+        }*/
 
 
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                loadSms();
                 String SENT = "Message Sent";
                 String DELIVERED = "Message Delivered";
 
@@ -306,17 +227,14 @@ public class ConverseActivity extends AppCompatActivity {
                     smsManager.sendTextMessage(address, null, myMessage, SentpendingIntent, DelpendingIntent);
 
                     Toast.makeText(ConverseActivity.this, "Message Sent \n", Toast.LENGTH_SHORT).show();
-
-                    //getting the current time
+                /*    //getting the current time
                     String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
                     //now adding sent messages
                     conv2 = new converseModel();
                     conv2.setLeft(false);
                     conv2.setSent_msg(myMessage);
                     conv2.setTime_sent(currentTime);
-                    listModel.add(conv2);
-
-
+                    listModel.add(conv2);*/
                     //when we send the sms the edit text to clear
                     e1.getText().clear();
 
@@ -325,14 +243,101 @@ public class ConverseActivity extends AppCompatActivity {
             }
         });
 
-        converse.notifyDataSetChanged();
-        listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 
+
+      /*  listView.setSelection(converse.getCount() - 1);
+        listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);*/
       //if (timeSend.equals(0)>=timeGot)
 
+    }
+    public void loadSms(){
 
-        listView.setSelection(converse.getCount() - 1);
-        listView.setAdapter(converse);
+        testList=new ArrayList<>();
+
+        Uri uri=Uri.parse("content://sms/");
+
+        cr=getApplicationContext().getContentResolver();
+        cursor=cr.query(uri,null,"thread_id="+connect,null,"date asc");
+
+        if (cursor !=null){
+
+            cursor.moveToFirst();
+
+        }
+
+        for (int i=0; i<cursor.getCount(); i++){
+
+            body=cursor.getString(cursor.getColumnIndexOrThrow("body"));
+            address=cursor.getString(cursor.getColumnIndexOrThrow("address"));
+            date=cursor.getLong(cursor.getColumnIndexOrThrow("date"));
+
+            add=address;
+
+            Date date1=new Date(date); // accept long value.
+            tarehe = date1.toString();
+            System.out.println(date1);
+
+
+
+            test=new testingModel(body);
+            testList.add(test);
+
+            cursor.moveToNext();
+
+        }
+        if (cursor==null){
+
+            Toast.makeText(getApplicationContext(),"No reply from this contact",Toast.LENGTH_LONG).show();
+            cursor.close();
+
+        }
+
+        // encode the phone number and build the filter URI
+        Uri contactUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(address));
+
+        ContentResolver ctrs=getApplicationContext().getContentResolver();
+
+        curse = ctrs.query(contactUri, null, null, null,null);
+
+        if (curse !=null) {
+
+            curse.moveToFirst();
+
+        }
+
+        for (int d=0; d<curse.getCount(); d++){
+
+
+            // Get values from contacts database:
+            ContactName = curse.getString(curse.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+            contactId=curse.getString(curse.getColumnIndex(ContactsContract.PhoneLookup._ID));
+
+            if (ContactName==null){
+
+                contactName=address;
+
+            }else {
+
+                getSupportActionBar().setTitle(ContactName);
+                getSupportActionBar().setSubtitle(address);
+
+
+            }
+            curse.moveToNext();
+
+        }
+        if (curse==null){
+
+            Toast.makeText(getApplicationContext(),"Contact doesn't exist",Toast.LENGTH_LONG).show();
+
+            curse.close();
+        }
+
+        adapter1=new testingAdapter(this,testList);
+        listView.scrollToPosition(testList.size() - 1);
+        listView.setAdapter(adapter1);
+        adapter1.notifyDataSetChanged();
+
 
     }
 
@@ -378,6 +383,25 @@ public class ConverseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onStart() {
+
+        loadSms();
+        super.onStart();
+
+    }
+
+    @Override
+    protected void onPause() {
+        loadSms();
+        super.onPause();
+    }
+
+    @Override
+    protected void onRestart() {
+        loadSms();
+        super.onRestart();
+    }
 }
 
 

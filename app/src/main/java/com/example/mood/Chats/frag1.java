@@ -134,6 +134,8 @@ public class frag1 extends Fragment {
             mer= thread_id[i];
             Snippet=snippet[i];
 
+            System.out.println(mer);
+
 
             Cursor curse=getActivity().getContentResolver().query(Uri.parse("content://sms/inbox"), null,"thread_id="+mer, null, null);
 

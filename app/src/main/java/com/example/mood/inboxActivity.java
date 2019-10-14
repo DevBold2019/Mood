@@ -75,21 +75,18 @@ public class inboxActivity extends AppCompatActivity {
         Number = extras.getString("Number");
         pic=extras.getInt("pic");
 
+        final String nn=Number;
+        final String name=username;
 
         //tool Bar
         toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        final String nn=Number;
-        final String name=username;
-
-        ///////////
         getSupportActionBar().setTitle(name);
         getSupportActionBar().setSubtitle(nn);
-
-
         //getSupportActionBar().setLogo(pic);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+
         ActivityCompat.requestPermissions(inboxActivity.this, new String[]{"android.permission.READ_SMS"}, REQUEST_CODE_ASK_PERMISSIONS);
 
 
@@ -100,7 +97,7 @@ public class inboxActivity extends AppCompatActivity {
         //imageView.setImageResource(pic);
 
 
-        //setting omn Action to our button
+        //setting  Action to the button
         fab.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
@@ -128,9 +125,7 @@ public class inboxActivity extends AppCompatActivity {
 
                      Toast.makeText(inboxActivity.this,"Message Sent \n",Toast.LENGTH_SHORT).show();
 
-                     //setting the text from the inbox
-                     String list=myMessage;
-
+                     //clearing the text from the inbox
                      editText.getText().clear();
 
                  }

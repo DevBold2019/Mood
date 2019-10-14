@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 
 import com.example.mood.Chats.frag1;
+import com.example.mood.Fragments.TestingFrag;
 import com.example.mood.Fragments.contactsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -65,6 +66,12 @@ public class MainUi extends AppCompatActivity {
 
                       case R.id.Contact:
                           currentFragment=new contactsFragment();
+
+                          break;
+
+                      case R.id.camera:
+
+                          currentFragment=new TestingFrag();
 
                           break;
 
