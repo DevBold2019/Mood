@@ -1,6 +1,5 @@
-package com.example.mood;
+package com.example.mood.walkThrough;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
+
+import com.example.mood.R;
 
 import java.util.List;
 

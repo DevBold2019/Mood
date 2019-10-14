@@ -1,4 +1,4 @@
-package com.example.mood;
+package com.example.mood.Contacts;
 
 public class ContactsModal {
 
@@ -6,22 +6,28 @@ public class ContactsModal {
     int pic;
 
 
-    public ContactsModal(String name, String number, int pic) {
-        this.name = name;
-        this.number = number;
-        this.pic = pic;
-    }
-
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getNumber() {
         return number;
     }
 
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
     public int getPic() {
         return pic;
+    }
+
+    public void setPic(int pic) {
+        this.pic = pic;
     }
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.telephony.SmsMessage;
 
 public class MessageReceived extends BroadcastReceiver {
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -21,10 +22,7 @@ public class MessageReceived extends BroadcastReceiver {
 
             for (int i=0; i<messages.length; i++){
                 messages [i]=SmsMessage.createFromPdu((byte[])( objects !=null ? objects[i] : null));
-                mystring +=messages[i].getOriginatingAddress();
-                mystring +=":";
-                mystring +=messages [i] .getMessageBody();
-                mystring +="\n";
+                mystring +=messages[i].getOriginatingAddress(); mystring +=":"; mystring +=messages [i] .getMessageBody(); mystring +="\n";
 
             }
 
@@ -33,7 +31,16 @@ public class MessageReceived extends BroadcastReceiver {
             intent1.putExtra("message",mystring);
             context.sendBroadcast(intent1);
 
+
+          //  inboxActivity inst=inboxActivity.instance();
+//            inst. updatemyInbox(mystring);
+
         }
+
+
+
+
+
 
     }
 }

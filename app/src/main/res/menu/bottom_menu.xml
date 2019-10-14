@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+ <!--   <item
+        android:id="@+id/call"
+        android:icon="@drawable/phone50px"
+        android:title="call"/>-->
+
+    <item
+        android:id="@+id/camera"
+        android:icon="@drawable/compactcamera50px"
+        android:title="Camera"/>
+
+    <item
+        android:id="@+id/Message"
+        android:icon="@drawable/chatfilled50px"
+        android:title="Chat"/>
+
+    <item
+        android:id="@+id/Contact"
+        android:icon="@drawable/contacts50px"
+        android:title="Contact"/>
+
+
+
+</menu>

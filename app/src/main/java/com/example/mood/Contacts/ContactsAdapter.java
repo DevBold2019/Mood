@@ -1,4 +1,4 @@
-package com.example.mood;
+package com.example.mood.Contacts;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +10,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.mood.R;
+import com.example.mood.inboxActivity;
 
 import java.util.List;
 
@@ -50,11 +52,12 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
             public void onClick(View view) {
 
 
-                Intent intent=new Intent(context,inboxActivity.class);
+                Intent intent=new Intent(context, inboxActivity.class);
 
                 Bundle extras = new Bundle();
                 extras.putString("Number",contactsModal.getNumber());
                 extras.putString("Name",contactsModal.getName());
+                extras.putInt("pic",contactsModal.getPic());
                 intent.putExtras(extras);
                 context.startActivity(intent);
 

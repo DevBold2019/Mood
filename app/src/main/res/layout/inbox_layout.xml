@@ -1,6 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
 
-</LinearLayout>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="8dp">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:src="@drawable/group"
+        android:id="@+id/SendersPic"
+        android:padding="5dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textSize="12sp"
+        android:maxWidth="200dp"
+        android:maxLines="2"
+        android:id="@+id/SendersName"
+        app:layout_constraintLeft_toRightOf="@+id/SendersPic"
+        android:layout_marginLeft="2dp"
+        android:text="Edins Gabina"
+        android:textColor="#fff"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:id="@+id/SendersMessage"
+        android:maxWidth="240dp"
+        android:maxLines="12"
+        app:layout_constraintLeft_toRightOf="@+id/SendersPic"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/sender_bg"
+        android:textColor="#fff"
+        android:text="Hi there"
+        app:layout_constraintTop_toBottomOf="@+id/SendersName"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="6dp"
+        android:maxLines="2"
+        android:maxWidth="100dp"
+        android:textSize="10sp"
+        android:textColor="#fff"
+        android:id="@+id/SendersTime"
+       android:layout_marginTop="1dp"
+        android:text="11:00"
+        app:layout_constraintLeft_toRightOf="@+id/SendersMessage"
+        app:layout_constraintTop_toBottomOf="@+id/SendersMessage"/>
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

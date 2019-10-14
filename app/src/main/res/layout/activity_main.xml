@@ -5,8 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/ui_bg"
-    tools:context=".MainActivity">
+    tools:context=".walkThrough.MainActivity">
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -51,6 +50,7 @@
         android:layout_marginStart="40dp"
         android:layout_marginLeft="40dp"
         android:layout_marginBottom="100dp"
+        app:tabIndicatorColor="#778899"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -63,7 +63,8 @@
         android:layout_marginBottom="32dp"
         android:text="@string/Button"
         android:visibility="invisible"
-        android:background="@drawable/buttonbg"
+        android:background="#6A5ACD"
+        android:textColor="#fff"
         android:layout_marginTop="10dp"
         android:onClick="load"
         app:layout_constraintRight_toRightOf="parent"
@@ -73,7 +74,7 @@
     <Button
         android:id="@+id/button3"
         android:layout_width="88dp"
-        android:background="@drawable/bt_ui"
+        android:background="@drawable/ui_bg"
         android:layout_height="48dp"
         android:layout_marginRight="20dp"
         android:layout_marginBottom="20dp"

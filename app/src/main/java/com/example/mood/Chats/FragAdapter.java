@@ -35,6 +35,8 @@ public class FragAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
+
+
         return fragTitle.size();
     }
 

@@ -1,4 +1,4 @@
-package com.example.mood;
+package com.example.mood.walkThrough;
 
 public class WalkObject  {
     String Title,description;
@@ -11,10 +11,12 @@ public class WalkObject  {
     }
 
     public String getTitle() {
+
         return Title;
     }
 
     public String getDescription() {
+
         return description;
     }
 

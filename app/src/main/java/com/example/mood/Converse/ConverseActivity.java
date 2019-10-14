@@ -1,29 +1,23 @@
-package com.example.mood;
+package com.example.mood.Converse;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 
-import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DataSetObserver;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
 import android.text.TextUtils;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -33,25 +27,20 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 
+import com.example.mood.R;
 import com.example.mood.profile.profileActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.InputStream;
-import java.io.StringWriter;
-import java.nio.charset.StandardCharsets;
-import java.text.DateFormat;
+import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import static android.telephony.SmsManager.RESULT_ERROR_GENERIC_FAILURE;
-import static android.telephony.SmsManager.RESULT_ERROR_NO_SERVICE;
-import static android.telephony.SmsManager.RESULT_ERROR_NULL_PDU;
-import static android.telephony.SmsManager.RESULT_ERROR_RADIO_OFF;
 
 public class ConverseActivity extends AppCompatActivity {
 
@@ -81,19 +70,28 @@ public class ConverseActivity extends AppCompatActivity {
     converseModel conv2,conv1,conv;
 
     //for inbox
-    String body,date,address;
+    String body,address;
 
     //for sent messages
 
-    String Date, Body;
+    String  Body;
+    Long Date;
+    Long date;
 
     InputStream input;
     int pic;
     Bitmap photo;
 
+    String timeGot;
+    String timeSend;
+    String tarehe, tarehe1;
+
+    public  String add;
 
 
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +101,7 @@ public class ConverseActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         Bundle bundle = intent.getExtras();
+        assert bundle != null;
         getAdd = bundle.getString("Address");
 
 
@@ -119,15 +118,12 @@ public class ConverseActivity extends AppCompatActivity {
         e1 = findViewById(R.id.myEDit);
 
 
-       /* e1.setOnTouchListener(new View.OnTouchListener() {
+        e1.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
 
                 final int DRAWABLE_LEFT = 0;
-                  *//*  final int DRAWABLE_TOP = 1;
-                    final int DRAWABLE_RIGHT = 2;
-                    final int DRAWABLE_BOTTOM = 3;*//*
 
                 if (event.getRawX() <= (e1.getCompoundDrawables()[DRAWABLE_LEFT].getBounds().width())) {
                     // your action here
@@ -140,7 +136,6 @@ public class ConverseActivity extends AppCompatActivity {
 
         });
 
-*/
 
 
 
@@ -167,16 +162,23 @@ public class ConverseActivity extends AppCompatActivity {
 
             body=cursor.getString(cursor.getColumnIndexOrThrow("body"));
             address=cursor.getString(cursor.getColumnIndexOrThrow("address"));
-            date=cursor.getString(cursor.getColumnIndexOrThrow("date"));
+            date=cursor.getLong(cursor.getColumnIndexOrThrow("date"));
 
+            add=address;
+
+            Date date1=new Date(date); // accept long value.
+             tarehe = date1.toString();
+            System.out.println(date1);
 
 
             converseModel cmd=new converseModel();
 
             cmd.setReceived_msg(body);
             cmd.setLeft(true);
-            cmd.setTime_receivd(date);
+            cmd.setTime_receivd(tarehe);
             cmd.setName_sender(address);
+
+            timeGot=cmd.getTime_receivd();
 
             listModel.add(cmd);
 
@@ -208,15 +210,20 @@ public class ConverseActivity extends AppCompatActivity {
         for (int m=0; m<c.getCount(); m++){
 
             Body=c.getString(c.getColumnIndexOrThrow("body"));
-            Date=c.getString(c.getColumnIndexOrThrow("date"));
+            Date=c.getLong(c.getColumnIndexOrThrow("date"));
 
+            Date date1=new Date(Date); // accept long value.
+            tarehe1 = date1.toString();
+            System.out.println(date1);
 
 
             converseModel cmd1=new converseModel();
 
             cmd1.setSent_msg(Body);
             cmd1.setLeft(false);
-            cmd1.setTime_sent(Date);
+            cmd1.setTime_sent(tarehe1);
+
+            timeSend=cmd1.getTime_sent();
 
 
             listModel.add(cmd1);
@@ -318,20 +325,19 @@ public class ConverseActivity extends AppCompatActivity {
             }
         });
 
-
-
         converse.notifyDataSetChanged();
         listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
+
+      //if (timeSend.equals(0)>=timeGot)
+
+
         listView.setSelection(converse.getCount() - 1);
         listView.setAdapter(converse);
-
-
 
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
 
         getMenuInflater().inflate(R.menu.inbox_menu,menu);
 
@@ -346,8 +352,7 @@ public class ConverseActivity extends AppCompatActivity {
 
             case R.id.call:
 
-                Toast.makeText(getApplicationContext(),"Calling"+address,Toast.LENGTH_LONG).show();
-                onRestart();
+                Toast.makeText(getApplicationContext(),"Calling\t"+add,Toast.LENGTH_LONG).show();
 
                 break;
 
@@ -356,17 +361,15 @@ public class ConverseActivity extends AppCompatActivity {
                 Intent intent=new Intent(getApplicationContext(), profileActivity.class);
 
                 Bundle bundle=new Bundle();
-                bundle.putString("Number",address);
-                bundle.putString("Name",ContactName);
+                bundle.putString("Number",add);
+                bundle.putString("Name",contactName);
 
 
+                intent.putExtras(bundle);
                 startActivity(intent);
                 finish();
 
                 break;
-
-
-
 
 
         }
@@ -375,16 +378,6 @@ public class ConverseActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    @Override
-    protected void onRestart() {
-
-        Intent intent=new Intent(ConverseActivity.this,ConverseActivity.class);
-        startActivity(intent);
-        finish();
-
-        super.onRestart();
-    }
 }
 
 

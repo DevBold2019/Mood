@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+def buildVersionCode = Integer.parseInt(new Date().format("yyMMddHH"))
+
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.1"
@@ -7,7 +9,7 @@ android {
         applicationId "com.example.mood"
         minSdkVersion 15
         targetSdkVersion 29
-        versionCode 1
+        versionCode buildVersionCode
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -26,10 +28,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
-    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+
+
+    implementation 'androidx.recyclerview:recyclerview:1.1.0-alpha06'
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+
+    implementation 'com.vanniktech:emoji-ios:0.6.0'
+
 
     implementation 'de.hdodenhof:circleimageview:3.0.0'
 }
