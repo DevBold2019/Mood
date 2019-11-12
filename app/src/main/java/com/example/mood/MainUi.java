@@ -59,20 +59,15 @@ public class MainUi extends AppCompatActivity {
                   switch (menuItem.getItemId()){
 
                       case R.id.Message:
-
                           currentFragment=new frag1();
-
                           break;
 
                       case R.id.Contact:
                           currentFragment=new contactsFragment();
-
                           break;
 
                       case R.id.camera:
-
                           currentFragment=new TestingFrag();
-
                           break;
 
                   }

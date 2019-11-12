@@ -180,18 +180,14 @@ public class frag1 extends Fragment {
 
                 contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
 
-                if (contactName=="0"){
+                if (contactName == null){
 
-                    PataNamba=address;
+                    objSms.set_address(address);
 
-
+                    return;
                 }
-                else{
 
                     PataNamba=contactName;
-
-                }
-
 
 
                 cursor.moveToNext();
@@ -203,21 +199,13 @@ public class frag1 extends Fragment {
                 cursor.close();
             }
 
-
-            System.out.println("My adddresss is:"+address);
-            System.out.println(today);
-
             c.moveToNext();
-
-
-
 
 
             objSms = new Sms();
 
-
-            objSms.set_address(PataNamba);
             objSms.set_msg(snippet[i]);
+            objSms.set_address(PataNamba);
             objSms.set_date(count[i]);
             objSms.set_id(mer);
 

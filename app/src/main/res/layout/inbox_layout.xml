@@ -28,7 +28,6 @@
         app:layout_constraintLeft_toRightOf="@+id/SendersPic"
         android:layout_marginLeft="2dp"
         android:text="Edins Gabina"
-        android:textColor="#fff"
         app:layout_constraintTop_toTopOf="parent"/>
 
 
@@ -54,7 +53,6 @@
         android:maxLines="2"
         android:maxWidth="100dp"
         android:textSize="10sp"
-        android:textColor="#fff"
         android:id="@+id/SendersTime"
        android:layout_marginTop="1dp"
         android:text="11:00"

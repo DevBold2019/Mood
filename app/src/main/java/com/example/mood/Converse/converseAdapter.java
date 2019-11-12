@@ -4,34 +4,39 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.example.mood.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
-public class converseAdapter extends BaseAdapter {
+public class converseAdapter extends ArrayAdapter<converseModel> {
 
     TextView t1,t2,t3,t4,t5,t6,t7;
 
     Context context;
-    List<converseModel>list;
+    List<converseModel>list=new ArrayList<>();
 
-    public converseAdapter(Context context, List<converseModel> list) {
-        this.context = context;
-        this.list = list;
+    public converseAdapter(@NonNull Context context, int resource) {
+        super(context, resource);
     }
+
+    @Override
+    public void add(converseModel object) {
+        list.add(object);
+        super.add(object);
+    }
+
 
     @Override
     public int getCount() {
 
         return list.size();
-    }
-
-    @Override
-    public Object getItem(int i) {
-        return list.get(i);
     }
 
     @Override

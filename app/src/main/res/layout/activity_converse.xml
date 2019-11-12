@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/main_bg"
     tools:context=".Converse.ConverseActivity">
 
     <androidx.appcompat.widget.Toolbar
@@ -19,7 +18,7 @@
     </androidx.appcompat.widget.Toolbar>
 
 
-    <androidx.recyclerview.widget.RecyclerView
+    <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/chatListView"
@@ -27,7 +26,7 @@
         android:divider="@android:color/transparent"
         android:layout_above="@+id/card">
 
-    </androidx.recyclerview.widget.RecyclerView>
+    </ListView>
 
 
     <androidx.cardview.widget.CardView
@@ -83,13 +82,12 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="20dp"
                 android:padding="10dp"
-                android:src="@drawable/ic_message_black_24dp"
+                android:src="@drawable/ic_send_black_24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/myEDit"
-                app:layout_constraintTop_toTopOf="parent" />
-
-
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>
