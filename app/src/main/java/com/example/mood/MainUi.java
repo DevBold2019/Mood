@@ -66,9 +66,9 @@ public class MainUi extends AppCompatActivity {
                           currentFragment=new contactsFragment();
                           break;
 
-                      case R.id.camera:
+                    /*  case R.id.camera:
                           currentFragment=new TestingFrag();
-                          break;
+                          break;*/
 
                   }
 

@@ -7,10 +7,10 @@
         android:icon="@drawable/phone50px"
         android:title="call"/>-->
 
-    <item
+  <!--  <item
         android:id="@+id/camera"
         android:icon="@drawable/compactcamera50px"
-        android:title="Camera"/>
+        android:title="Camera"/>-->
 
     <item
         android:id="@+id/Message"

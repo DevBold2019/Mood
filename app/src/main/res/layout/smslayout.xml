@@ -10,8 +10,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/cardy"
-        app:cardBackgroundColor="#292626">
+        android:id="@+id/cardy">
 
      <androidx.constraintlayout.widget.ConstraintLayout
          android:layout_width="match_parent"
@@ -36,8 +35,8 @@
              app:layout_constraintStart_toEndOf="@+id/picha"
              app:layout_constraintRight_toRightOf="@+id/picha"
              app:layout_constraintTop_toTopOf="parent"
-             android:textColor="#fff"
-             android:textColorHint="#fff"
+             android:textColor="#000"
+             android:textColorHint="#000"
              android:gravity="start|center"
              android:layout_marginLeft="20dp"
              android:layout_marginStart="20dp"
@@ -50,14 +49,14 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              app:layout_constraintEnd_toEndOf="parent"
-             android:textColor="#fff"
+             android:textColor="#000"
+             android:textColorHint="#000"
              app:layout_constraintRight_toRightOf="@+id/jina"
              app:layout_constraintTop_toTopOf="parent"
              android:gravity="start|center"
              android:layout_marginRight="5dp"
              android:layout_marginEnd="5dp"
              android:inputType="datetime"
-             android:textColorHint="#fff"
              android:layout_marginTop="15dp"
              android:hint="23:00" />
 
@@ -71,8 +70,8 @@
              android:maxWidth="230dp"
              android:maxLines="3"
              android:maxHeight="800dp"
-             android:textColor="#fff"
-             android:textColorHint="#fff"
+             android:textColor="#000"
+             android:textColorHint="#000"
              android:gravity="start"
              android:layout_marginLeft="20dp"
              android:layout_marginRight="20dp"
@@ -94,8 +93,8 @@
              android:layout_marginEnd="10dp"
              android:gravity="start"
              android:hint="200"
-             android:textColor="#fff"
-             android:textColorHint="#fff"
+             android:textColor="#000"
+             android:textColorHint="#000"
              android:maxHeight="60dp"
              android:maxLength="70"
              android:maxLines="3"

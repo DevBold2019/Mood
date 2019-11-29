@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,7 @@ public class contactsFragment extends Fragment {
     // RecyclerView.Adapter adapter;
 
     List<ContactsModal> contactsModalList;
+    ContactsAdapter contactsAdapter;
     Toolbar toolbar;
     Cursor cursor;
     Context context;
@@ -96,7 +98,7 @@ public class contactsFragment extends Fragment {
             }
 
 
-            ContactsAdapter contactsAdapter = new ContactsAdapter(contactsModalList,getActivity());
+            contactsAdapter = new ContactsAdapter(contactsModalList,getActivity());
             contactsAdapter.notifyDataSetChanged();
             recyclerView.setAdapter(contactsAdapter);
 
@@ -105,23 +107,39 @@ public class contactsFragment extends Fragment {
         return view;
     }
 
+   /* @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
 
- /*   @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-
-        getMenuInflater().inflate(R.menu.contacts_menu, menu);
+        inflater.inflate(R.menu.contacts_menu, menu);
 
         MenuItem search_item = menu.findItem(R.id.search);
 
         SearchView searchView = (SearchView) search_item.getActionView();
-        // searchView.setFocusable(false);
-        // searchView.setQueryHint("Search");
+         searchView.setFocusable(false);
+        searchView.setQueryHint("Search");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+
+                //contactsModalList
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
 
 
-        return super.onCreateOptionsMenu(menu);
-    }
+                return false;
+            }
+        });
 
-    @Override
+    }*/
+
+
+   /* @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         switch (item.getItemId()) {

@@ -64,7 +64,8 @@ public class frag1 extends Fragment {
 
     String  PataNamba;
     String Snippet,Count;
-    String Availability;
+    String digits;
+
 
 
 
@@ -118,6 +119,7 @@ public class frag1 extends Fragment {
            String count[] = new String[c.getCount()];
            String snippet[] =new String[c.getCount()];
           String  thread_id[]= new String[c.getCount()];
+          String  date[]= new String[c.getCount()];
 
 
           smsLists=new ArrayList<>();
@@ -127,9 +129,10 @@ public class frag1 extends Fragment {
 
         for ( i = 0; i < c.getCount(); i++) {
 
-           count[i] = c.getString(c.getColumnIndexOrThrow("msg_count")).toString();
-            thread_id[i]= c.getString(c.getColumnIndexOrThrow("thread_id")).toString();
-            snippet[i] = c.getString(c.getColumnIndexOrThrow("snippet")).toString();
+           count[i] = c.getString(c.getColumnIndexOrThrow("msg_count"));
+            thread_id[i]= c.getString(c.getColumnIndexOrThrow("thread_id"));
+            snippet[i] = c.getString(c.getColumnIndexOrThrow("snippet"));
+           // date[i] = c.getString(c.getColumnIndexOrThrow("date"));
 
             mer= thread_id[i];
             Snippet=snippet[i];
@@ -182,12 +185,16 @@ public class frag1 extends Fragment {
 
                 if (contactName == null){
 
-                    objSms.set_address(address);
+                   PataNamba=address;
 
-                    return;
-                }
+
+                }else{
 
                     PataNamba=contactName;
+
+                }
+
+
 
 
                 cursor.moveToNext();
@@ -208,6 +215,7 @@ public class frag1 extends Fragment {
             objSms.set_address(PataNamba);
             objSms.set_date(count[i]);
             objSms.set_id(mer);
+
 
             smsLists.add(objSms);
 

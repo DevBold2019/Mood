@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:titleTextColor="#fff"
-        android:background="@drawable/main_bg"
+        android:background="@color/colorAccent"
         android:id="@+id/myBar">
     </androidx.appcompat.widget.Toolbar>
 
@@ -24,16 +24,10 @@
         app:layout_constraintTop_toBottomOf="@+id/myBar"
         app:layout_constraintBottom_toTopOf="@+id/BottomNav"/>
 
-
-
-
-
-
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/BottomNav"
-        android:background="#5000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/bottom_menu" />
 

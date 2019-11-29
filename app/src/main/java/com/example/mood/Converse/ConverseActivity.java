@@ -94,6 +94,7 @@ public class ConverseActivity extends AppCompatActivity {
 
     String timeGot;
     String timeSend;
+    String name;
     String tarehe, tarehe1;
 
     public  String add;
@@ -225,7 +226,7 @@ public class ConverseActivity extends AppCompatActivity {
 
                     return;
 
-                } else {
+                }
                     floatingActionButton.setVisibility(View.VISIBLE);
 
                     smsManager = SmsManager.getDefault();
@@ -233,27 +234,13 @@ public class ConverseActivity extends AppCompatActivity {
 
                     Toast.makeText(ConverseActivity.this, "Message Sent \n", Toast.LENGTH_SHORT).show();
                     //getting the current time
-                    String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-                    //now adding sent messages
-                    conv2 = new converseModel();
-                    conv2.setLeft(false);
-                    conv2.setSent_msg(myMessage);
-                    conv2.setTime_sent(currentTime);
-                    listModel.add(conv2);
-
+                  //  String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
+                     loadSms();
                     //when we send the sms the edit text to clear
                     e1.getText().clear();
 
-
-                }
             }
         });
-
-
-
-      /*  listView.setSelection(converse.getCount() - 1);
-        listView.setTranscriptMode(AbsListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);*/
-      //if (timeSend.equals(0)>=timeGot)
 
     }
     public void loadSms(){
@@ -366,6 +353,8 @@ public class ConverseActivity extends AppCompatActivity {
             ContactName = curse.getString(curse.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
             contactId=curse.getString(curse.getColumnIndex(ContactsContract.PhoneLookup._ID));
 
+            name=contactName;
+
             if (ContactName==null){
 
 
@@ -436,7 +425,7 @@ public class ConverseActivity extends AppCompatActivity {
 
                 Bundle bundle=new Bundle();
                 bundle.putString("Number",add);
-                bundle.putString("Name",contactName);
+                bundle.putString("Name",name);
 
 
                 intent.putExtras(bundle);
