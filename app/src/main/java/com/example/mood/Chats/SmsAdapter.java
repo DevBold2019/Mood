@@ -85,7 +85,7 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.ViewHolder> {
 
             t1=itemView.findViewById(R.id.jina);
             t2=itemView.findViewById(R.id.mesoo);
-            t3=itemView.findViewById(R.id.date);
+            t3=itemView.findViewById(R.id.mesooCount);
             relativeLayout=itemView.findViewById(R.id.myrelative);
 
 

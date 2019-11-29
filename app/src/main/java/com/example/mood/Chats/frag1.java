@@ -44,10 +44,7 @@ public class frag1 extends Fragment {
     List<Sms> slist;
 
     Sms objSms;
-    int totalSMS;
-    Cursor c, cursor1;
 
-    String add, body, state, date, tarehe, folder, thread;
     String sent = "sent";
     String inbox = "inbox";
     String id;
@@ -172,6 +169,9 @@ public class frag1 extends Fragment {
 
             Cursor cursor = cr.query(uri, new String[] { ContactsContract.PhoneLookup.DISPLAY_NAME }, null, null, null);
 
+
+            PataNamba=address;
+
             if (cursor != null) {
 
                 cursor.moveToFirst();
@@ -183,14 +183,10 @@ public class frag1 extends Fragment {
 
                 contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
 
-                if (contactName == null){
+                if (contactName != null){
 
-                   PataNamba=address;
+                   PataNamba=contactName;
 
-
-                }else{
-
-                    PataNamba=contactName;
 
                 }
 
