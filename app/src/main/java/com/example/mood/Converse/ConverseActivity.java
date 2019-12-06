@@ -248,7 +248,7 @@ public class ConverseActivity extends AppCompatActivity {
 
         testList=new ArrayList<>();
 
-        Uri uri=Uri.parse("contentms/inbox://s");
+        Uri uri=Uri.parse("content://sms/inbox");
 
         cr=getApplicationContext().getContentResolver();
         cursor=cr.query(uri,null,"thread_id="+connect,null,"date asc");
