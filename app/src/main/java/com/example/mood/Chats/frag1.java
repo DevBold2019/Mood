@@ -211,6 +211,7 @@ public class frag1 extends Fragment {
             objSms.set_address(PataNamba);
             objSms.set_date(count[i]);
             objSms.set_id(mer);
+            objSms.setThread(mer);
 
 
             smsLists.add(objSms);
@@ -232,7 +233,7 @@ public class frag1 extends Fragment {
 
 
 
-        //today = (DateUtils.formatDateTime(context, System.currentTimeMillis(), DateUtils.FORMAT_SHOW_TIME | DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_NUMERIC_DATE | DateUtils.FORMAT_12HOUR));
+
 
 
 

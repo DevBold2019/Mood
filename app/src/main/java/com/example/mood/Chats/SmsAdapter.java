@@ -59,6 +59,7 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.ViewHolder> {
 
                 Bundle bundle=new Bundle();
                 bundle.putString("Address",sms.get_id());
+                bundle.putString("Thread",sms.getThread());
 
                 intent.putExtras(bundle);
 

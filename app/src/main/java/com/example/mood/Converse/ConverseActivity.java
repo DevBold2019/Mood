@@ -55,7 +55,7 @@ public class ConverseActivity extends AppCompatActivity {
 
     List<converseModel> listModel;
 
-    public String getAdd;
+    public String getAdd,getThread;
 
     String  connect;
     String contactName;
@@ -115,6 +115,7 @@ public class ConverseActivity extends AppCompatActivity {
         Bundle bundle = intent.getExtras();
         assert bundle != null;
         getAdd = bundle.getString("Address");
+        getThread = bundle.getString("Thread");
 
 
 
@@ -247,7 +248,7 @@ public class ConverseActivity extends AppCompatActivity {
 
         testList=new ArrayList<>();
 
-        Uri uri=Uri.parse("content://sms/inbox");
+        Uri uri=Uri.parse("contentms/inbox://s");
 
         cr=getApplicationContext().getContentResolver();
         cursor=cr.query(uri,null,"thread_id="+connect,null,"date asc");
@@ -416,6 +417,19 @@ public class ConverseActivity extends AppCompatActivity {
             case R.id.call:
 
                 Toast.makeText(getApplicationContext(),"Calling\t"+add,Toast.LENGTH_LONG).show();
+
+                break;
+
+
+            case  R.id.delete:
+
+
+                Toast.makeText(getApplicationContext(),"Deleting"+getThread,Toast.LENGTH_LONG).show();
+
+
+                Uri thread = Uri.parse("content://sms/inbox");
+
+                getApplicationContext(). getContentResolver().delete(thread,"thread_id="+getThread, null);
 
                 break;
 

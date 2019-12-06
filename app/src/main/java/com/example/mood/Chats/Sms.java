@@ -4,9 +4,11 @@ public class Sms {
     private String _id;
     private String _address;
     private String _msg;
+    private String thread;
    /* private String _readState; //"0" for have not read sms and "1" for have read sms
     private String _folderName;*/
       private String _date;
+
 
 
 
@@ -32,6 +34,14 @@ public class Sms {
 
     public void set_msg(String _msg) {
         this._msg = _msg;
+    }
+
+    public String getThread() {
+        return thread;
+    }
+
+    public void setThread(String thread) {
+        this.thread = thread;
     }
 
     public String get_date() {

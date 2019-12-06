@@ -34,7 +34,7 @@ public class MainUi extends AppCompatActivity {
         toolbar=findViewById(R.id.myBar);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Mood");
+        getSupportActionBar().setTitle("Mood Sms");
 
 
       //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
