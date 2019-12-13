@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.widget.Toast;
@@ -39,7 +40,12 @@ public class MessageReceived extends BroadcastReceiver {
                             .build();
                 }
                 NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
-                notificationManagerCompat.notify(1, notification);
+                notification.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                notificationManagerCompat.notify(1000, notification);
+
+
+
+
 
 
 

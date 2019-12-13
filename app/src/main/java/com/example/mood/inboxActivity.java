@@ -48,7 +48,6 @@ public class inboxActivity extends AppCompatActivity {
     SmsManager smsManager,smsManager1;
     PendingIntent SentpendingIntent;
     PendingIntent DeliverypendingIntent;
-    PendingIntent pending;
     String SENT="Message Sent";
     String DELIVERED="Message Delivered";
 
@@ -86,7 +85,6 @@ public class inboxActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         Objects.requireNonNull(getSupportActionBar()).setTitle(username);
         getSupportActionBar().setSubtitle(Number);
-        getSupportActionBar().setLogo(pic);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
@@ -109,7 +107,6 @@ public class inboxActivity extends AppCompatActivity {
                  myMessage=editText.getText().toString();
                  //If edit text is Empty don't send the message
                  if (TextUtils.isEmpty(myMessage)){
-
                      editText.setError("Can't send empty Text");
 
                   return;

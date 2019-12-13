@@ -9,9 +9,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -19,6 +23,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,6 +53,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class ConverseActivity extends AppCompatActivity {
 
@@ -107,6 +114,8 @@ public class ConverseActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        listModel=new ArrayList<>();
+
         connect = getAdd;
 
 
@@ -132,9 +141,6 @@ public class ConverseActivity extends AppCompatActivity {
 
         });
 
-        listModel=new ArrayList<>();
-
-
         loadSms();
         getContacts();
 
@@ -142,149 +148,97 @@ public class ConverseActivity extends AppCompatActivity {
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                loadSms();
-                String SENT = "Message Sent";
-                String DELIVERED = "Message Delivered";
-
-                PendingIntent SentpendingIntent = PendingIntent.getBroadcast(ConverseActivity.this, 0, new Intent(SENT), 0);
-                PendingIntent DelpendingIntent = PendingIntent.getBroadcast(ConverseActivity.this, 0, new Intent(DELIVERED), 0);
-
-                String myMessage = e1.getText().toString();
-
                 //If edit text is Empty don't send the message
-
                 if (e1.getText().toString().trim().isEmpty()) {
                     e1.setError("Can't send empty Text");
                     return;
 
                 }
-                    smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(address, null, myMessage, SentpendingIntent, DelpendingIntent);
-                    Toast.makeText(ConverseActivity.this, "Message Sent \n", Toast.LENGTH_SHORT).show();
-                    //getting the current time
-                  //  String currentTime = new SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(new Date());
-                     loadSms();
-                    //when we send the sms the edit text to clear
-                    e1.getText().clear();
+                 sendSms();
 
             }
         });
 
     }
-    public void loadSms(){
 
-        testList=new ArrayList<>();
+        public void loadSms(){
 
-        Uri uri=Uri.parse("content://sms/");
+            testList=new ArrayList<>();
 
-        cr=getApplicationContext().getContentResolver();
-        cursor=cr.query(uri,null,"thread_id="+connect,null,"date asc");
+            Uri uri=Uri.parse("content://sms/");
 
-        if (cursor !=null){
+            cr=getApplicationContext().getContentResolver();
+            cursor=cr.query(uri,null,"thread_id="+connect,null,"date asc");
 
-            cursor.moveToFirst();
+            if (cursor !=null){
 
-        }
-
-        for (int i=0; i<cursor.getCount(); i++){
-
-            body=cursor.getString(cursor.getColumnIndexOrThrow("body"));
-            address=cursor.getString(cursor.getColumnIndexOrThrow("address"));
-            date=cursor.getLong(cursor.getColumnIndexOrThrow("date"));
-            type=cursor.getString(cursor.getColumnIndexOrThrow("type"));
-
-            add=address;
-
-            String received="1";
-            String send="2";
-
-          /*  MESSAGE_TYPE_INBOX  = 1;
-            MESSAGE_TYPE_SENT   = 2;*/
-
-            switch (type){
-
-                case "1" :
-                    Toast.makeText(ConverseActivity.this, " MESSAGE_TYPE_INBOX ", Toast.LENGTH_SHORT).show();
-                    getType="1";
-                    break;
-                case "2":
-                    getType="2";
-
-                    break;
+                cursor.moveToFirst();
 
             }
-            Date date1=new Date(date); // accept long value.
-            tarehe = date1.toString();
 
-            converseModel cmd1=new converseModel();
-            cmd1.setReceived_msg(body);
-            cmd1.setSent_msg(body);
-            cmd1.setName_sender(address);
-            cmd1.setType(getType);
-            cmd1.setTime_receivd(tarehe);
-            cmd1.setTime_sent(tarehe);
+            if (cursor.moveToFirst()){
 
-            listModel.add(cmd1);
+                do{
+
+                    body=cursor.getString(cursor.getColumnIndexOrThrow("body"));
+                    address=cursor.getString(cursor.getColumnIndexOrThrow("address"));
+                    date=cursor.getLong(cursor.getColumnIndexOrThrow("date"));
+                    type=cursor.getString(cursor.getColumnIndexOrThrow("type"));
+
+                    add=address;
+
+                    switch (type){
+
+                        case "1" :
+                            Toast.makeText(ConverseActivity.this, " MESSAGE_TYPE_INBOX ", Toast.LENGTH_SHORT).show();
+                            getType="1";
+                            break;
+                        case "2":
+                            getType="2";
+                            break;
+
+                    }
+                    Date date1=new Date(date); // accept long value.
+                    tarehe = date1.toString();
+
+                    converseModel cmd1=new converseModel();
+                    cmd1.setReceived_msg(body);
+                    cmd1.setSent_msg(body);
+                    cmd1.setName_sender(address);
+                    cmd1.setType(getType);
+                    cmd1.setTime_receivd(tarehe);
+                    cmd1.setTime_sent(tarehe);
+
+                    listModel.add(cmd1);
 
 
-            cursor.moveToNext();
+                }while(cursor.moveToNext());
+
+
+            }
+            if (cursor==null){
+
+                cursor.close();
+
+            }
+
+            adapter=new converseAdapter(getApplicationContext(),listModel);
+            adapter.notifyDataSetChanged();
+            recyclerView.setAdapter(adapter);
+            recyclerView.scrollToPosition(listModel.size()-1);
+
+
 
         }
-        if (cursor==null){
 
-            cursor.close();
-
-        }
-        //gettting the sent messages
-     /*   Cursor c;
-        ContentResolver cre;
-
-        cre=getApplicationContext().getContentResolver();
-        Uri uri1=Uri.parse("content://sms/sent");
-
-        c=cre.query(uri1,null,"thread_id="+connect,null,"date asc");
-
-        if (c !=null){
-
-            c.moveToFirst();
-        }
-
-        for (int m=0; m<c.getCount(); m++){
-
-            Body=c.getString(c.getColumnIndexOrThrow("body"));
-            Date=c.getLong(c.getColumnIndexOrThrow("date"));
-
-
-
-
-
-            c.moveToNext();
-        }
-        if (c==null){
-
-            Toast.makeText(getApplicationContext(),"No reply from this contact",Toast.LENGTH_LONG).show();
-            c.close();
-
-        }*/
-
-
-        adapter=new converseAdapter(getApplicationContext(),listModel);
-        adapter.notifyDataSetChanged();
-        recyclerView.setAdapter(adapter);
-
-        recyclerView.scrollToPosition(listModel.size()-1);
-
-
-
-    }
-
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void getContacts(){
 
         // encode the phone number and build the filter URI
         Uri contactUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(address));
 
         ContentResolver ctrs=getApplicationContext().getContentResolver();
-        getSupportActionBar().setTitle(add);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(add);
 
         curse = ctrs.query(contactUri, null, null, null,null);
 
@@ -293,43 +247,114 @@ public class ConverseActivity extends AppCompatActivity {
             curse.moveToFirst();
 
         }
+        if (  curse.moveToFirst()) {
 
-        for (int d=0; d<curse.getCount(); d++){
+            do {
 
-            // Get values from contacts database:
-            ContactName = curse.getString(curse.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
-            contactId=curse.getString(curse.getColumnIndex(ContactsContract.PhoneLookup._ID));
-
-            name=contactName;
-
-
-
-            if (ContactName==null){
-
-
-
-            }else {
+                // Get values from contacts database:
+                ContactName = curse.getString(curse.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
+                contactId = curse.getString(curse.getColumnIndex(ContactsContract.PhoneLookup._ID));
 
                 getSupportActionBar().setTitle(ContactName);
                 getSupportActionBar().setSubtitle(address);
 
+                curse.moveToNext();
 
-            }
-            curse.moveToNext();
+
+                if (curse == null) {
+                    curse.close();
+                }
+
+
+            } while (curse.moveToNext());
+
 
         }
-        if (curse==null){
-
-            Toast.makeText(getApplicationContext(),"Contact doesn't exist",Toast.LENGTH_LONG).show();
-
-            curse.close();
-        }
-
-
 
 
     }
 
+
+    public void sendSms(){
+
+        String SENT = "Message Sent";
+        String DELIVERED = "Message Delivered";
+
+        PendingIntent SentpendingIntent = PendingIntent.getBroadcast(ConverseActivity.this, 0, new Intent(SENT), 0);
+        PendingIntent DelpendingIntent = PendingIntent.getBroadcast(ConverseActivity.this, 0, new Intent(DELIVERED), 0);
+
+        String myMessage = e1.getText().toString();
+
+        smsManager = SmsManager.getDefault();
+        smsManager.sendTextMessage(address, null, myMessage, SentpendingIntent, DelpendingIntent);
+        loadSms();
+        e1.getText().clear();
+
+        // SEND BroadcastReceiver
+        BroadcastReceiver sendSMS = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                switch (getResultCode()) {
+
+                    case Activity.RESULT_OK:
+                        Toast.makeText(getBaseContext(),"Sms Sent", Toast.LENGTH_LONG).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                        Toast.makeText(getBaseContext(),"Error try Again", Toast.LENGTH_LONG).show();
+
+                        break;
+                    case SmsManager.RESULT_ERROR_NO_SERVICE:
+                        Toast.makeText(getBaseContext(),"No service Try again", Toast.LENGTH_LONG).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_NULL_PDU:
+                        Toast.makeText(getBaseContext(),"Failed", Toast.LENGTH_LONG).show();
+                        break;
+                    case SmsManager.RESULT_ERROR_RADIO_OFF:
+                        Toast.makeText(getBaseContext(),"Can't Send in flight mode", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        };
+
+        // DELIVERY BroadcastReceiver
+        BroadcastReceiver deliverSMS = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        Toast.makeText(getBaseContext(),"Delivered", Toast.LENGTH_LONG).show();
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        Toast.makeText(getBaseContext(),"Not Delivered", Toast.LENGTH_LONG).show();
+                        break;
+                }
+            }
+        };
+        registerReceiver(sendSMS, new IntentFilter(SENT));
+        registerReceiver(deliverSMS, new IntentFilter(DELIVERED));
+
+       /* String smsText = getSmsText();
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            SubscriptionManager localSubscriptionManager = SubscriptionManager.from(getApplicationContext());
+            if (localSubscriptionManager.getActiveSubscriptionInfoCount() > 1) {
+                List localList = localSubscriptionManager.getActiveSubscriptionInfoList();
+
+                SubscriptionInfo simInfo1 = (SubscriptionInfo) localList.get(0);
+                SubscriptionInfo simInfo2 = (SubscriptionInfo) localList.get(1);
+
+                //SendSMS From SIM One
+                SmsManager.getSmsManagerForSubscriptionId(simInfo1.getSubscriptionId()).sendTextMessage(customer.getMobile(), null, smsText, sentPI, deliveredPI);
+
+                //SendSMS From SIM Two
+                SmsManager.getSmsManagerForSubscriptionId(simInfo2.getSubscriptionId()).sendTextMessage(customer.getMobile(), null, smsText, sentPI, deliveredPI);
+            }
+        } else {
+            SmsManager.getDefault().sendTextMessage(customer.getMobile(), null, smsText, sentPI, deliveredPI);
+            Toast.makeText(getBaseContext(), R.string.sms_sending, Toast.LENGTH_SHORT).show();
+        }*/
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -346,16 +371,11 @@ public class ConverseActivity extends AppCompatActivity {
         switch (item.getItemId()){
 
             case R.id.call:
-
                 Intent intent1 = new Intent(Intent.ACTION_DIAL);
                 intent1.setData(Uri.parse("tel:"+add));
                 startActivity(intent1);
-
                 break;
-
-
             case  R.id.delete:
-
                 Toast.makeText(getApplicationContext(),"Deleting"+getThread,Toast.LENGTH_LONG).show();
                 Uri thread = Uri.parse("content://sms/inbox");
                 getApplicationContext(). getContentResolver().delete(thread,"thread_id="+getThread, null);
