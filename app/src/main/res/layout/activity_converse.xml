@@ -18,16 +18,16 @@
 
         </androidx.appcompat.widget.Toolbar>
 
-        <ListView
+        <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:id="@+id/chatListView"
+            android:id="@+id/converseecycler"
             android:layout_below="@+id/tll"
             android:divider="@android:color/transparent"
             app:layout_constraintTop_toBottomOf="@+id/tll"
             app:layout_constraintBottom_toTopOf="@+id/card">
 
-        </ListView>
+        </androidx.recyclerview.widget.RecyclerView>
 
 
         <androidx.cardview.widget.CardView

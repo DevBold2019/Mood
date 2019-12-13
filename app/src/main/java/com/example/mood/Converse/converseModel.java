@@ -2,7 +2,7 @@ package com.example.mood.Converse;
 
 public class converseModel {
 
-    Boolean left;
+    String type;
     String received_msg;
     String sent_msg;
     String Time_receivd;
@@ -11,12 +11,14 @@ public class converseModel {
     String name_sender;
 
 
-    public Boolean getLeft() {
-        return left;
+
+
+    public String getType() {
+        return type;
     }
 
-    public void setLeft(Boolean left) {
-        this.left = left;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getReceived_msg() {

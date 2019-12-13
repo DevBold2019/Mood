@@ -1,5 +1,6 @@
 package com.example.mood;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -44,7 +46,11 @@ public class inboxActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_ASK_PERMISSIONS = 0;
     private static inboxActivity inst;
     SmsManager smsManager,smsManager1;
-    IntentFilter intentFilter;
+    PendingIntent SentpendingIntent;
+    PendingIntent DeliverypendingIntent;
+    PendingIntent pending;
+    String SENT="Message Sent";
+    String DELIVERED="Message Delivered";
 
     Toolbar toolbar;
     EditText editText;
@@ -55,17 +61,11 @@ public class inboxActivity extends AppCompatActivity {
     int pic;
     String myMessage;
 
-    String messo,add;
-
-    String textRcvd;
-
-
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inbox);
-
-
 
 
         Intent intent = getIntent();
@@ -75,20 +75,22 @@ public class inboxActivity extends AppCompatActivity {
         Number = extras.getString("Number");
         pic=extras.getInt("pic");
 
-        final String nn=Number;
-        final String name=username;
+        if (!(!username.equals(null) || !Number.equals(null))){
+
+            Toast.makeText(getApplicationContext(),"Invalid Number",Toast.LENGTH_LONG).show();
+
+        }
 
         //tool Bar
         toolbar=findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(name);
-        getSupportActionBar().setSubtitle(nn);
-        //getSupportActionBar().setLogo(pic);
+        Objects.requireNonNull(getSupportActionBar()).setTitle(username);
+        getSupportActionBar().setSubtitle(Number);
+        getSupportActionBar().setLogo(pic);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         ActivityCompat.requestPermissions(inboxActivity.this, new String[]{"android.permission.READ_SMS"}, REQUEST_CODE_ASK_PERMISSIONS);
-
 
         //Finding views by Id
         fab=findViewById(R.id.sendbtn);
@@ -96,51 +98,52 @@ public class inboxActivity extends AppCompatActivity {
         imageView=findViewById(R.id.image);
         //imageView.setImageResource(pic);
 
+             SentpendingIntent=PendingIntent.getBroadcast(inboxActivity.this,1,new Intent(SENT),0);
+             DeliverypendingIntent=PendingIntent.getBroadcast(inboxActivity.this,2,new Intent(DELIVERED),0);
+
 
         //setting  Action to the button
         fab.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-
-                 String SENT="Message Sent";
-                 String DELIVERED="Message Delivered";
-
-                 PendingIntent SentpendingIntent=PendingIntent.getBroadcast(inboxActivity.this,0,new Intent(SENT),0);
-                 PendingIntent DelpendingIntent=PendingIntent.getBroadcast(inboxActivity.this,0,new Intent(DELIVERED),0);
-
-
                  myMessage=editText.getText().toString();
-
                  //If edit text is Empty don't send the message
                  if (TextUtils.isEmpty(myMessage)){
 
-                     editText.setError("Can't be empty");
-                     Toast.makeText(inboxActivity.this,"Can't send a blank sms",Toast.LENGTH_SHORT).show();
+                     editText.setError("Can't send empty Text");
 
-                     //but if its typed you can send a message
-                 } else{
-
-                     smsManager=SmsManager.getDefault();
-                     smsManager.sendTextMessage(Number,null,myMessage,SentpendingIntent,DelpendingIntent);
-
-                     Toast.makeText(inboxActivity.this,"Message Sent \n",Toast.LENGTH_SHORT).show();
-
-                     //clearing the text from the inbox
-                     editText.getText().clear();
-
+                  return;
                  }
-
+                 sendMessage();
              }
          });
 
-        //t1.setVisibility(View.INVISIBLE);
-       // t2.setVisibility(View.INVISIBLE);
-       // t2.setText(messo);
 
     }
 
+    public void sendMessage(){
+
+        smsManager=SmsManager.getDefault();
+        smsManager.sendTextMessage(Number,null,myMessage,SentpendingIntent,DeliverypendingIntent);
+        Toast.makeText(inboxActivity.this,"Message Sent \n",Toast.LENGTH_SHORT).show();
+        editText.getText().clear();
 
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == 1 && resultCode == Activity.RESULT_OK) {
+            Toast.makeText(getApplicationContext(),"Message Sent",Toast.LENGTH_LONG).show();
+
+        }
+        if (requestCode == 2 && resultCode == Activity.RESULT_OK) {
+            Toast.makeText(getApplicationContext(),"Pending delivery",Toast.LENGTH_LONG).show();
+
+        }
+    }
 }
 
 

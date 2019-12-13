@@ -7,79 +7,144 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.mood.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class converseAdapter extends ArrayAdapter<converseModel> {
+public class converseAdapter extends RecyclerView.Adapter {
 
-    TextView t1,t2,t3,t4,t5,t6,t7;
+
+    public static final int VIEW_TYPE_MESSAGE_SENT=1;
+    public static final int VIEW_TYPE_MESSAGE_RECEIVED=2;
 
     Context context;
-    List<converseModel>list=new ArrayList<>();
+    List<converseModel> list;
 
-    public converseAdapter(@NonNull Context context, int resource) {
-        super(context, resource);
+    public converseAdapter(Context context, List<converseModel> list) {
+
+        this.context = context;
+        this.list = list;
     }
 
     @Override
-    public void add(converseModel object) {
-        list.add(object);
-        super.add(object);
-    }
-
-
-    @Override
-    public int getCount() {
+    public int getItemCount() {
 
         return list.size();
     }
 
+    // Determines the appropriate ViewType according to the sender of the message.
     @Override
-    public long getItemId(int i) {
+    public int getItemViewType(int position) {
+        converseModel message =  list.get(position);
 
-        return 0;
+
+        if (message.getType().equals("1")) {
+            // If the current user is the sender of the message
+            return VIEW_TYPE_MESSAGE_SENT;
+
+        } else {
+            // If some other user sent the message
+            return VIEW_TYPE_MESSAGE_RECEIVED;
+        }
     }
 
+    // Inflates the appropriate layout according to the ViewType.
     @Override
-    public View getView(int i, View convertview, ViewGroup viewGroup) {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view;
 
-        View view1=convertview;
-        converseModel conModel=list.get(i);
+        if (viewType == VIEW_TYPE_MESSAGE_SENT) {
+
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.inbox_layout, parent, false);
+
+            return new SentMessageHolder(view);
+
+        } else if (viewType == VIEW_TYPE_MESSAGE_RECEIVED) {
+
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.sent_layout, parent, false);
+
+            return new ReceivedMessageHolder(view);
+        }
+
+        return null;
+    }
+
+    // Passes the message object to a ViewHolder so that the contents can be bound to UI.
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        converseModel message =  list.get(position);
+
+        switch (holder.getItemViewType()) {
+            case VIEW_TYPE_MESSAGE_SENT:
+                ((SentMessageHolder) holder).bind(message);
+                break;
+            case VIEW_TYPE_MESSAGE_RECEIVED:
+                ((ReceivedMessageHolder) holder).bind(message);
+                break;
+
+        }
+    }
 
 
-        if (conModel.left){
+    private class SentMessageHolder extends RecyclerView.ViewHolder {
 
-            view1=LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.inbox_layout,viewGroup,false);
+        TextView messageText, timeText, nameText;
 
-            t1=view1.findViewById(R.id.SendersName);
-            t2=view1.findViewById(R.id.SendersMessage);
-            t3=view1.findViewById(R.id.SendersTime);
+        SentMessageHolder(View itemView) {
+            super(itemView);
+
+            messageText =itemView.findViewById(R.id.SendersMessage);
+            timeText = itemView.findViewById(R.id.SendersTime);
+            nameText = itemView.findViewById(R.id.SendersName);
+        }
+
+        void bind(converseModel message) {
+
+            timeText.setText(message.getTime_sent());
+            nameText.setText(message.getName_sender());
+            messageText.setText(message.getSent_msg());
 
 
-            t1.setText(conModel.getName_sender());
-            t2.setText(conModel.getReceived_msg());
-            t3.setText(conModel.getTime_receivd());
+        }
+    }
 
-        }else{
+    private class ReceivedMessageHolder extends RecyclerView.ViewHolder {
+        TextView messageText, timeText;
 
-            view1=LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.sent_layout,viewGroup,false);
+        ReceivedMessageHolder(View itemView) {
+            super(itemView);
 
-            t4=view1.findViewById(R.id.mySentText);
-            t5=view1.findViewById(R.id.mySendingTime);
+            messageText = itemView.findViewById(R.id.mySentText);
+            timeText = itemView.findViewById(R.id.mySendingTime);
 
-            t4.setText(conModel.getSent_msg());
-            t5.setText(conModel.getTime_sent());
 
         }
 
+        void bind(converseModel message) {
+
+            messageText.setText(message.getSent_msg());
+            timeText.setText(message.getTime_sent());
+
+            // Format the stored timestamp into a readable String using method.
 
 
-
-        return view1;
+        }
     }
+
 }
+
+
+
+
+
+
+
+
+
+
