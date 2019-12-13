@@ -190,7 +190,6 @@ public class ConverseActivity extends AppCompatActivity {
                     switch (type){
 
                         case "1" :
-                            Toast.makeText(ConverseActivity.this, " MESSAGE_TYPE_INBOX ", Toast.LENGTH_SHORT).show();
                             getType="1";
                             break;
                         case "2":
