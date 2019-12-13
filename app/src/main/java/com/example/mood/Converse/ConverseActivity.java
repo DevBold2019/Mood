@@ -212,13 +212,9 @@ public class ConverseActivity extends AppCompatActivity {
 
                     break;
 
-
             }
-
             Date date1=new Date(date); // accept long value.
             tarehe = date1.toString();
-
-            Toast.makeText(ConverseActivity.this,"Type is:\t"+type,Toast.LENGTH_LONG).show();
 
             converseModel cmd1=new converseModel();
             cmd1.setReceived_msg(body);
@@ -229,8 +225,6 @@ public class ConverseActivity extends AppCompatActivity {
             cmd1.setTime_sent(tarehe);
 
             listModel.add(cmd1);
-
-
 
 
             cursor.moveToNext();
