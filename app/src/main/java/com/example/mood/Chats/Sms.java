@@ -8,9 +8,7 @@ public class Sms {
    /* private String _readState; //"0" for have not read sms and "1" for have read sms
     private String _folderName;*/
       private String _date;
-
-
-
+      private String _senderName;
 
     public String get_id() {
         return _id;
@@ -50,5 +48,13 @@ public class Sms {
 
     public void set_date(String _date) {
         this._date = _date;
+    }
+
+    public String get_senderName() {
+        return _senderName;
+    }
+
+    public void set_senderName(String _senderName) {
+        this._senderName = _senderName;
     }
 }

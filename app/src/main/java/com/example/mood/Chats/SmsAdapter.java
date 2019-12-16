@@ -50,6 +50,7 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.ViewHolder> {
        holder.t1.setText(sms.get_address());
        holder.t2.setText(sms.get_msg());
         holder.t3.setText(sms.get_date());
+        holder.t4.setText(sms.get_senderName());
 
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +79,7 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView t1,t2,t3;
+        TextView t1,t2,t3,t4;
          RelativeLayout relativeLayout;
 
         public ViewHolder(@NonNull View itemView) {
@@ -87,6 +88,7 @@ public class SmsAdapter extends RecyclerView.Adapter<SmsAdapter.ViewHolder> {
             t1=itemView.findViewById(R.id.jina);
             t2=itemView.findViewById(R.id.mesoo);
             t3=itemView.findViewById(R.id.mesooCount);
+            t4=itemView.findViewById(R.id.picha);
             relativeLayout=itemView.findViewById(R.id.myrelative);
 
 

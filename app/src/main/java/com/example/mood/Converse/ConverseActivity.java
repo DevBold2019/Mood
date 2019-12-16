@@ -170,12 +170,6 @@ public class ConverseActivity extends AppCompatActivity {
             cr=getApplicationContext().getContentResolver();
             cursor=cr.query(uri,null,"thread_id="+connect,null,"date asc");
 
-            if (cursor !=null){
-
-                cursor.moveToFirst();
-
-            }
-
             if (cursor.moveToFirst()){
 
                 do{
@@ -197,8 +191,14 @@ public class ConverseActivity extends AppCompatActivity {
                             break;
 
                     }
-                    Date date1=new Date(date); // accept long value.
+                   Date date1=new Date(date); // accept long value.
                     tarehe = date1.toString();
+
+                    java.util.Date date = new java.util.Date(date1.toString());
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                    System.out.println(sdf.format(date));
+                    tarehe = sdf.format(date);
+
 
                     converseModel cmd1=new converseModel();
                     cmd1.setReceived_msg(body);
@@ -275,6 +275,8 @@ public class ConverseActivity extends AppCompatActivity {
 
 
     public void sendSms(){
+
+        loadSms();
 
         String SENT = "Message Sent";
         String DELIVERED = "Message Delivered";

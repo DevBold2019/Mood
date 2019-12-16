@@ -31,6 +31,7 @@ import com.example.mood.Contacts.mygettingModel;
 import com.example.mood.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -107,7 +108,6 @@ public class frag1 extends Fragment {
 
     }
 
-
     public void getSMSCOnversationlist() {
 
         Uri SMS_INBOX = Uri.parse("content://sms/conversations/");
@@ -131,6 +131,7 @@ public class frag1 extends Fragment {
            count[i] = c.getString(c.getColumnIndexOrThrow("msg_count"));
             thread_id[i]= c.getString(c.getColumnIndexOrThrow("thread_id"));
             snippet[i] = c.getString(c.getColumnIndexOrThrow("snippet"));
+            android.util.Log.i("COLUMNS", Arrays.toString(c.getColumnNames()));
            // date[i] = c.getString(c.getColumnIndexOrThrow("date"));
 
             mer= thread_id[i];
@@ -163,8 +164,6 @@ public class frag1 extends Fragment {
             }
 
 
-
-
             ContentResolver cr = context.getContentResolver();
 
             Uri uri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(address));
@@ -178,21 +177,19 @@ public class frag1 extends Fragment {
 
                 cursor.moveToFirst();
 
-
             }
 
             for (int l=0; l<cursor.getCount(); l++) {
 
                 contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
 
-                if (contactName != null){
+                if (contactName == null){
 
-                   PataNamba=contactName;
+                PataNamba=address;
 
-
+                return;
                 }
-
-
+                    PataNamba=contactName;
 
 
                 cursor.moveToNext();
@@ -207,6 +204,7 @@ public class frag1 extends Fragment {
             c.moveToNext();
 
 
+
             objSms = new Sms();
 
             objSms.set_msg(snippet[i]);
@@ -214,6 +212,7 @@ public class frag1 extends Fragment {
             objSms.set_date(count[i]);
             objSms.set_id(mer);
             objSms.setThread(mer);
+            objSms.set_senderName(String.valueOf( PataNamba.toString().charAt(0)+""+PataNamba.toString().charAt(1)));
 
 
             smsLists.add(objSms);
