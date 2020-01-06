@@ -5,7 +5,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="20dp"
     tools:context=".Converse.ConverseActivity">
 
         <androidx.appcompat.widget.Toolbar
@@ -14,6 +13,7 @@
             android:background="@color/colorPrimary"
             app:layout_constraintTop_toTopOf="parent"
             app:titleTextColor="#fff"
+            android:elevation="8dp"
             android:id="@+id/tll">
 
         </androidx.appcompat.widget.Toolbar>
@@ -21,6 +21,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="0dp"
+           android:layout_marginBottom="8dp"
             android:id="@+id/converseecycler"
             android:layoutAnimation="@anim/layout_animation"
             android:layout_below="@+id/tll"
@@ -33,13 +34,15 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="70dp"
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="#F2F2F2"
             app:layout_constraintBottom_toBottomOf="parent"
             android:id="@+id/card">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:paddingBottom="5dp"
+                android:layout_height="wrap_content">
 
 
                 <EditText
@@ -47,11 +50,11 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:layout_gravity="center"
+                    android:layout_gravity="start"
                     android:padding="10dp"
-                    android:layout_margin="10dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_margin="5dp"
+                    android:textAlignment="textStart"
+                    android:inputType="textCapSentences|textMultiLine"
                     android:background="@drawable/receive_bg"
                     android:drawableStart="@drawable/ic_insert_emoticon_black_24dp"
                     android:drawableLeft="@drawable/ic_insert_emoticon_black_24dp"
@@ -60,14 +63,13 @@
                     android:gravity="center"
                     android:hint="Type your text here"
                     android:maxWidth="250dp"
-                    android:maxHeight="300dp"
+                    android:maxHeight="100dp"
                     android:maxLines="10"
-                    android:textAlignment="textStart"
                     app:layout_constraintEnd_toStartOf="@+id/sending"
                     app:layout_constraintLeft_toLeftOf="@+id/sending"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="RtlCompat" />
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/sending"
@@ -76,12 +78,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
                     android:layout_gravity="end"
-                    android:layout_margin="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="20dp"
+                    android:layout_margin="5dp"
                     android:padding="10dp"
                     android:src="@drawable/ic_send_black_24dp"
                     app:layout_constraintBottom_toBottomOf="parent"
