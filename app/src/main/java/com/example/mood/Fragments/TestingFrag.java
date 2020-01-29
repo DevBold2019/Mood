@@ -15,11 +15,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.mood.Converse.converseModel;
+import com.example.mood.Adapter_Classes.testingAdapter;
+import com.example.mood.Model_Classes.testingModel;
 import com.example.mood.R;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 
@@ -46,7 +46,7 @@ public class TestingFrag extends Fragment {
         list=new ArrayList<>();
 
 
-     /*   Uri uri= Uri.parse("content://sms/conversation");
+     /*   Uri uri= Uri.parse("content://smsModel/conversation");
         ContentResolver crs=getActivity().getContentResolver();
 
         Cursor cursor=crs.query(uri,null,"thread_id="+thread,null,"date DESC");
@@ -60,7 +60,7 @@ public class TestingFrag extends Fragment {
         }
             cursor.close();*/
 
-        Uri uri=Uri.parse("content://sms/");
+        Uri uri=Uri.parse("content://smsModel/");
 
         ContentResolver crs=getActivity().getContentResolver();
         Cursor cursor=crs.query(uri,null,"thread_id="+thread,null,"date ASC");

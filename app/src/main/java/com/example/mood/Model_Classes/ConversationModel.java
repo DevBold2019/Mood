@@ -1,6 +1,6 @@
-package com.example.mood.Chats;
+package com.example.mood.Model_Classes;
 
-public class Sms {
+public class ConversationModel {
     private String _id;
     private String _address;
     private String _msg;

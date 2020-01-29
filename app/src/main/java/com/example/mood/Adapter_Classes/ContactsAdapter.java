@@ -1,4 +1,4 @@
-package com.example.mood.Contacts;
+package com.example.mood.Adapter_Classes;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mood.Model_Classes.ContactsModel;
 import com.example.mood.R;
-import com.example.mood.inboxActivity;
+import com.example.mood.Activities.inboxActivity;
 
 import java.util.List;
 
@@ -21,11 +22,11 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHolder> {
 
-    List<ContactsModal>contactsModals;
+    List<ContactsModel> contactsModels;
     Context context;
 
-    public ContactsAdapter(List<ContactsModal> contactsModals, Context context) {
-        this.contactsModals = contactsModals;
+    public ContactsAdapter(List<ContactsModel> contactsModels, Context context) {
+        this.contactsModels = contactsModels;
         this.context = context;
     }
 
@@ -42,11 +43,11 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ContactsAdapter.ViewHolder holder, int position) {
 
-        final ContactsModal contactsModal=contactsModals.get(position);
+        final ContactsModel contactsModel = contactsModels.get(position);
 
-        holder.textView.setText(contactsModal.getName());
-        holder.textView1.setText(contactsModal.getNumber());
-        holder.circleImageView.setImageResource(contactsModal.getPic());
+        holder.textView.setText(contactsModel.getName());
+        holder.textView1.setText(contactsModel.getNumber());
+        holder.circleImageView.setImageResource(contactsModel.getPic());
         holder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -55,9 +56,9 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
                 Intent intent=new Intent(context, inboxActivity.class);
 
                 Bundle extras = new Bundle();
-                extras.putString("Number",contactsModal.getNumber());
-                extras.putString("Name",contactsModal.getName());
-                extras.putInt("pic",contactsModal.getPic());
+                extras.putString("Number", contactsModel.getNumber());
+                extras.putString("Name", contactsModel.getName());
+                extras.putInt("pic", contactsModel.getPic());
                 intent.putExtras(extras);
                 context.startActivity(intent);
 
@@ -74,7 +75,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.ViewHo
     @Override
     public int getItemCount() {
 
-        return contactsModals.size();
+        return contactsModels.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

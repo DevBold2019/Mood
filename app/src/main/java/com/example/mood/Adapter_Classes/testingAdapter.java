@@ -1,4 +1,4 @@
-package com.example.mood.Fragments;
+package com.example.mood.Adapter_Classes;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mood.Model_Classes.testingModel;
 import com.example.mood.R;
 
 import java.util.List;

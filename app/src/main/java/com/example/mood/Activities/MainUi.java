@@ -1,28 +1,21 @@
-package com.example.mood;
+package com.example.mood.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
-
-
-import com.example.mood.Chats.frag1;
-import com.example.mood.Fragments.TestingFrag;
+import com.example.mood.Fragments.ConversationFragment;
 import com.example.mood.Fragments.contactsFragment;
+import com.example.mood.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.tabs.TabLayout;
 
 public class MainUi extends AppCompatActivity {
 
-    ViewPager viewPager;
-    TabLayout tabLayout;
     BottomNavigationView bottomNav;
 
     Toolbar toolbar;
@@ -35,21 +28,10 @@ public class MainUi extends AppCompatActivity {
         toolbar=findViewById(R.id.myBar);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Mood Sms");
+        getSupportActionBar().setTitle("");
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
 
-
-      //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
-      //  FragAdapter fragAdapter=new FragAdapter(getSupportFragmentManager());
-
-       // fragAdapter.addFrags(new frag1(),"Chats");
-        //fragAdapter.addFrags(new frag2(),"Contact");
-      // fragAdapter.addFrags(new frag3(),"Buddies");
-
-      //  viewPager.setAdapter(fragAdapter);
-       // tabLayout.setupWithViewPager(viewPager);
 
         bottomNav=findViewById(R.id.BottomNav);
         bottomNav.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -62,16 +44,13 @@ public class MainUi extends AppCompatActivity {
                   switch (menuItem.getItemId()){
 
                       case R.id.Message:
-                          currentFragment=new frag1();
+                          currentFragment=new ConversationFragment();
                           break;
 
                       case R.id.Contact:
                           currentFragment=new contactsFragment();
                           break;
 
-                    /*  case R.id.camera:
-                          currentFragment=new TestingFrag();
-                          break;*/
 
                   }
 
@@ -82,9 +61,7 @@ public class MainUi extends AppCompatActivity {
             }
 
 
-
         );
-
 
         //BY DEFAULT This App will open this fragment being the first one
         if (savedInstanceState == null) {

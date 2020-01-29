@@ -1,4 +1,4 @@
-package com.example.mood.Chats;
+package com.example.mood.Adapter_Classes;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -8,13 +8,13 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FragAdapter extends FragmentPagerAdapter {
+public class FragmentAdapter extends FragmentPagerAdapter {
 
    private List<Fragment>fragmentList=new ArrayList<>();
    private List<String>fragTitle=new ArrayList<>();
 
 
-    public FragAdapter(FragmentManager fm) {
+    public FragmentAdapter(FragmentManager fm) {
         super(fm);
 
     }

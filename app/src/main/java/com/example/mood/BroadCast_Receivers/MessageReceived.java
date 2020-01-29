@@ -1,37 +1,35 @@
-package com.example.mood;
+package com.example.mood.BroadCast_Receivers;
 
 import android.app.Notification;
-import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.telephony.SmsMessage;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationManagerCompat;
 
-public class BroadCastService extends BroadcastReceiver {
+import com.example.mood.R;
+
+public class MessageReceived extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        Bundle bundle = intent.getExtras();
-        SmsMessage[] messages;
-        String mystring = "";
+        Bundle bundle=intent.getExtras();
+        SmsMessage [] messages;
+        String mystring="";
 
-        if (bundle != null) {
+        if (bundle !=null){
 
-            Object[] objects = (Object[]) bundle.get("pdus");
-            messages = new SmsMessage[objects != null ? objects.length : 0];
+            Object[]objects=(Object[])bundle.get("pdus");
+            messages=new SmsMessage[objects !=null ? objects.length:0];
 
-            for (int i = 0; i < messages.length; i++) {
-                messages[i] = SmsMessage.createFromPdu((byte[]) (objects != null ? objects[i] : null));
-                mystring += messages[i].getOriginatingAddress();
-                mystring += ":";
-                mystring += messages[i].getMessageBody();
-                mystring += "\n";
+            for (int i=0; i<messages.length; i++){
+                messages [i]=SmsMessage.createFromPdu((byte[])( objects !=null ? objects[i] : null));
+                mystring +=messages[i].getOriginatingAddress(); mystring +=":"; mystring +=messages [i] .getMessageBody(); mystring +="\n";
 
 
                 Notification notification = null;
@@ -48,10 +46,20 @@ public class BroadCastService extends BroadcastReceiver {
                 notificationManagerCompat.notify(1000, notification);
 
 
-                // Toast.makeText(context,"Message \t :"+messages[i].getMessageBody()+"\tFrom\t"+messages[i].getOriginatingAddress(),Toast.LENGTH_SHORT).show();
 
             }
 
+            Intent intent1=new Intent();
+            intent.setAction("SMS_RECEIVED_ACTION");
+            intent1.putExtra("message",mystring);
+            context.sendBroadcast(intent1);
+
         }
+
+
+
+
+
+
     }
 }

@@ -1,156 +1,126 @@
 package com.example.mood.Fragments;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mood.Contacts.ContactsAdapter;
-import com.example.mood.Contacts.ContactsModal;
+import com.example.mood.Adapter_Classes.ContactsAdapter;
+import com.example.mood.Model_Classes.ContactsModel;
 import com.example.mood.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class contactsFragment extends Fragment {
 
     RecyclerView recyclerView;
-    // RecyclerView.Adapter adapter;
-
-    List<ContactsModal> contactsModalList;
+    List<ContactsModel> contactsModelList;
     ContactsAdapter contactsAdapter;
-    Toolbar toolbar;
     Cursor cursor;
-    Context context;
     String name, number;
+    ConstraintLayout layout;
     int photo;
-    //int i;
+
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view;
 
+        View view;
         view = LayoutInflater.from(getContext()).inflate(R.layout.contacts_fragment, container, false);
 
-            // getSupportActionBar().hide();
-          /*  setSupportActionBar(toolbar);
-            getSupportActionBar().setTitle("Contacts");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-*/
+        layout = view.findViewById(R.id.permissionLayout);
+        recyclerView = view.findViewById(R.id.recycle);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-            recyclerView = view.findViewById(R.id.recycle);
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-
-            cursor =getActivity(). getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME);
-            contactsModalList = new ArrayList<>();
-
-            while (cursor.moveToNext()) {
-
-
-                name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                photo= cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
-
-                if (photo == 0) {
-
-                    photo = R.drawable.group;
-
-                } else if (photo != 0){
-
-                    photo=photo;
-
-
-                }
-
-
-                ContactsModal contactsModal = new ContactsModal();
-
-                contactsModal.setName(name);
-                contactsModal.setNumber(number);
-                contactsModal.setPic(photo);
-                contactsModalList.add(contactsModal);
-
-            }
-            if (cursor != null) {
-                cursor.close();
-
-            }
-
-
-            contactsAdapter = new ContactsAdapter(contactsModalList,getActivity());
-            contactsAdapter.notifyDataSetChanged();
-            recyclerView.setAdapter(contactsAdapter);
-
+        checkPermission();
 
 
         return view;
     }
 
-   /* @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
+    private void loadContacts(){
 
-        inflater.inflate(R.menu.contacts_menu, menu);
+        cursor =getActivity(). getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, ContactsContract.Contacts.DISPLAY_NAME);
+        contactsModelList = new ArrayList<>();
 
-        MenuItem search_item = menu.findItem(R.id.search);
+        while (cursor.moveToNext()) {
 
-        SearchView searchView = (SearchView) search_item.getActionView();
-         searchView.setFocusable(false);
-        searchView.setQueryHint("Search");
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
-            @Override
-            public boolean onQueryTextSubmit(String query) {
+            name = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
+            number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+            photo= cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
 
-                //contactsModalList
+            if (photo == 0) {
 
-                return false;
+                photo = R.drawable.group;
+
+            } else if (photo != 0){
+
+                photo=photo;
+
+
             }
 
-            @Override
-            public boolean onQueryTextChange(String newText) {
 
+            ContactsModel contactsModel = new ContactsModel();
 
-                return false;
-            }
-        });
-
-    }*/
-
-
-   /* @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        switch (item.getItemId()) {
-
-            case R.id.search:
-
-                break;
+            contactsModel.setName(name);
+            contactsModel.setNumber(number);
+            contactsModel.setPic(photo);
+            contactsModelList.add(contactsModel);
 
         }
-        return super.onOptionsItemSelected(item);
-    }*/
+        if (cursor != null) {
+            cursor.close();
+
+        }
 
 
+        contactsAdapter = new ContactsAdapter(contactsModelList,getActivity());
+        contactsAdapter.notifyDataSetChanged();
+        recyclerView.setAdapter(contactsAdapter);
+
+
+
+
+    }
+
+    private void checkPermission(){
+
+        String[]allow ={Manifest.permission.READ_SMS,Manifest.permission.READ_CONTACTS,Manifest.permission.SEND_SMS};
+
+        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), String.valueOf(allow)) == PackageManager.PERMISSION_GRANTED){
+
+            layout.setVisibility(View.GONE);
+            recyclerView.setVisibility(View.VISIBLE);
+
+            loadContacts();
+
+        }else {
+
+            layout.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+
+
+        }
+
+
+    }
 }

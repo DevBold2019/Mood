@@ -1,10 +1,10 @@
-package com.example.mood.walkThrough;
+package com.example.mood.Model_Classes;
 
-public class WalkObject  {
+public class WalkModel {
     String Title,description;
     int Image;
 
-    public WalkObject(String title, String description, int image) {
+    public WalkModel(String title, String description, int image) {
         Title = title;
         this.description = description;
         Image = image;

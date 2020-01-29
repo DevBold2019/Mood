@@ -1,4 +1,4 @@
-package com.example.mood.walkThrough;
+package com.example.mood.Adapter_Classes;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
+import com.example.mood.Model_Classes.WalkModel;
 import com.example.mood.R;
 
 import java.util.List;
@@ -19,18 +20,18 @@ import static android.content.Context.*;
 public class WalkAdapter extends PagerAdapter {
 
     private Context context;
-    private List<WalkObject> walkObjectList;
+    private List<WalkModel> walkModelList;
 
     //constructor
-    protected WalkAdapter(Context context, List<WalkObject> walkObjectList) {
+    public WalkAdapter(Context context, List<WalkModel> walkModelList) {
         this.context = context;
-        this.walkObjectList = walkObjectList;
+        this.walkModelList = walkModelList;
     }
 
     //getting size of our objects
     @Override
     public int getCount() {
-        return walkObjectList.size();
+        return walkModelList.size();
     }
 
     @Override
@@ -45,16 +46,15 @@ public class WalkAdapter extends PagerAdapter {
 
         LayoutInflater layoutInflater=(LayoutInflater)context.getSystemService(LAYOUT_INFLATER_SERVICE);
 
-       // @SuppressLint("InflateParams")
         View view=layoutInflater.inflate(R.layout.walklay,null);
 
         TextView textView=view.findViewById(R.id.Title);
         TextView textView1=view.findViewById(R.id.desc);
         ImageView imageView=view.findViewById(R.id.pic);
 
-        textView.setText(walkObjectList.get(position).getTitle());
-        textView1.setText(walkObjectList.get(position).getDescription());
-        imageView.setImageResource(walkObjectList.get(position).getImage());
+        textView.setText(walkModelList.get(position).getTitle());
+        textView1.setText(walkModelList.get(position).getDescription());
+        imageView.setImageResource(walkModelList.get(position).getImage());
 
 
 

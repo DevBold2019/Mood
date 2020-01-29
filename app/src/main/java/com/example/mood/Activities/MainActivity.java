@@ -1,4 +1,4 @@
-package com.example.mood.walkThrough;
+package com.example.mood.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -11,12 +11,12 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.mood.MainUi;
 import com.example.mood.R;
+import com.example.mood.Adapter_Classes.WalkAdapter;
+import com.example.mood.Model_Classes.WalkModel;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -82,13 +82,12 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
+            final List<WalkModel> walkModelList = new ArrayList<>();
+            walkModelList.add(new WalkModel("Friends", "Talk to them \nfrom anywhere at anytime", R.drawable.chatthree));
+            walkModelList.add(new WalkModel("Lost Chats?", "With mood you can backup your chats\nhide for privacy", R.drawable.chattwo));
+            walkModelList.add(new WalkModel("Start using Mood", "Have fun with Mood", R.drawable.group));
 
-            final List<WalkObject> walkObjectList = new ArrayList<>();
-            walkObjectList.add(new WalkObject("Friends", "Talk to them \nfrom anywhere at anytime", R.drawable.chatthree));
-            walkObjectList.add(new WalkObject("Lost Chats?", "With mood you can backup your chats\nhide for privacy", R.drawable.chattwo));
-            walkObjectList.add(new WalkObject("Start using Mood", "Have fun with Mood", R.drawable.group));
-
-            WalkAdapter walkAdapter = new WalkAdapter(MainActivity.this, walkObjectList);
+            WalkAdapter walkAdapter = new WalkAdapter(MainActivity.this, walkModelList);
 
             viewPager.setAdapter(walkAdapter);
             tabLayout.setupWithViewPager(viewPager);
@@ -115,49 +114,37 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
 
-
                     //getting position of the current Image
                     position = viewPager.getCurrentItem();
-
-                    String[] perms = new String[]{Manifest.permission.SEND_SMS, Manifest.permission.READ_CONTACTS, Manifest.permission.READ_SMS};
-
-
-                    ActivityCompat.requestPermissions(MainActivity.this, perms, READ_SMS_CODE);
-
-
                     //if position is less than maximum of the tabs we go to next
-                    if (position < walkObjectList.size()) {
+                    if (position < walkModelList.size()) {
 
                         position++;
                         viewPager.setCurrentItem(position);
                     }
                     //else we skip to the last Page
-                    else if (position == walkObjectList.size() - 1) {
+                    else if (position == walkModelList.size() - 1) {
 
                         lastPage();
                     }
                 }
             });
 
-
             //immediately the page reaches the end it skips to the lastPage
             tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
 
-
-                    if (tab.getPosition() == walkObjectList.size() - 1) {
+                    if (tab.getPosition() == walkModelList.size() - 1) {
 
                         tabLayout.setSelectedTabIndicator(R.drawable.buttonbg);
                         lastPage();
                     }
 
-
                 }
 
                 @Override
                 public void onTabUnselected(TabLayout.Tab tab) {
-
                 }
 
                 @Override
@@ -165,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
 
                 }
             });
-
 
 
 
@@ -204,34 +190,6 @@ public class MainActivity extends AppCompatActivity {
 
        // button1.setBackground(getDrawable());
 
-
-
-
     }
 
-    public boolean seeContacts(){
-
-        String[]seeIf={Manifest.permission_group.SMS,Manifest.permission_group.CONTACTS};
-
-        if (ContextCompat.checkSelfPermission(MainActivity.this, String.valueOf(seeIf))==PackageManager.PERMISSION_GRANTED){
-
-        }else{
-
-            String[] permision = {Manifest.permission_group.CONTACTS, Manifest.permission_group.SMS};
-            ActivityCompat.requestPermissions(MainActivity.this,permision,GENERAL_CODE);
-
-        }
-
-
-        return true;
-    }
-
-    @Override
-    protected void onStart() {
-
-        String[] permision = {Manifest.permission_group.CONTACTS, Manifest.permission_group.SMS};
-        ActivityCompat.requestPermissions(MainActivity.this,permision,GENERAL_CODE);
-
-        super.onStart();
-    }
 }

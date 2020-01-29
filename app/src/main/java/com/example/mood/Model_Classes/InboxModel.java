@@ -1,6 +1,6 @@
-package com.example.mood.Converse;
+package com.example.mood.Model_Classes;
 
-public class converseModel {
+public class InboxModel {
 
     String type;
     String received_msg;

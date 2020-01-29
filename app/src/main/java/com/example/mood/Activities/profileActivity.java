@@ -1,4 +1,4 @@
-package com.example.mood.profile;
+package com.example.mood.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;

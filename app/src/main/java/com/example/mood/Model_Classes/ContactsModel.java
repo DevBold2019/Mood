@@ -1,6 +1,6 @@
-package com.example.mood.Contacts;
+package com.example.mood.Model_Classes;
 
-public class ContactsModal {
+public class ContactsModel {
 
     String name,number;
     int pic;

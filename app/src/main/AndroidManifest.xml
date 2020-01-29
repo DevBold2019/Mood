@@ -27,20 +27,19 @@
         android:theme="@style/AppTheme">
 
         <receiver
-            android:name=".BroadCastService"></receiver>
+            android:name=".BroadCast_Receivers.BroadCastService"></receiver>
 
         <activity
-            android:name=".profile.profileActivity"
-            android:parentActivityName=".Converse.ConverseActivity" />
+            android:name=".Activities.profileActivity"
+            android:parentActivityName=".Activities.ConverseActivity" />
         <activity
-            android:name=".Converse.ConverseActivity"
-            android:parentActivityName=".MainUi" />
+            android:name=".Activities.ConverseActivity"
+            android:parentActivityName=".Activities.MainUi" />
         <activity
-            android:name=".inboxActivity"
-            android:parentActivityName=".MainUi" />
-        <activity android:name=".chatActivity" />
-        <activity android:name=".MainUi"  />
-        <activity android:name=".walkThrough.MainActivity">
+            android:name=".Activities.inboxActivity"
+            android:parentActivityName=".Activities.MainUi" />
+        <activity android:name=".Activities.MainUi"  />
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,7 +48,7 @@
         </activity>
 
         <receiver
-            android:name=".MessageReceived"
+            android:name=".BroadCast_Receivers.MessageReceived"
             android:enabled="true"
             android:exported="true">
             <intent-filter android:priority="999">

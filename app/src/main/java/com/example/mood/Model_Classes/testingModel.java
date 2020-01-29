@@ -1,4 +1,4 @@
-package com.example.mood.Fragments;
+package com.example.mood.Model_Classes;
 
 public class testingModel {
     String messages;

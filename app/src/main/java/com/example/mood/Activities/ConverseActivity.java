@@ -1,4 +1,4 @@
-package com.example.mood.Converse;
+package com.example.mood.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -17,81 +17,54 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
-import android.telephony.SubscriptionInfo;
-import android.telephony.SubscriptionManager;
-import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AbsListView;
 import android.widget.EditText;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 
-import com.example.mood.Fragments.testingAdapter;
-import com.example.mood.Fragments.testingModel;
+import com.example.mood.Adapter_Classes.InboxAdapter;
+import com.example.mood.Model_Classes.InboxModel;
+import com.example.mood.Model_Classes.testingModel;
 import com.example.mood.R;
-import com.example.mood.profile.profileActivity;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.InputStream;
-import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 public class ConverseActivity extends AppCompatActivity {
 
     Toolbar toolbar;
-    ListView listView;
-
-    List<converseModel> listModel;
-
+    List<InboxModel> listModel;
     public String getAdd,getThread;
-
-    String  connect;
-    String contactName;
-
+    String connect;
     EditText e1;
     SmsManager smsManager;
     FloatingActionButton floatingActionButton;
     RecyclerView recyclerView;
-
-    Cursor cursor,curse;
+    Cursor cursor, curse;
     ContentResolver cr;
-
-    public String  ContactName,contactId;
-    List<testingModel>testList;
-    converseAdapter adapter;
-
+    public String ContactName, contactId;
+    List<testingModel> testList;
+    InboxAdapter adapter;
     //for inbox
-    String body,address;
-
+    String body, address;
     //for sent messages
-    String  Body,type,getType;
-    Long Date;
+    String type, getType;
     Long date;
     String name;
-    String tarehe, tarehe1;
-
-    public  String add;
-
-
+    String tarehe;
+    public String add;
 
     @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -108,8 +81,6 @@ public class ConverseActivity extends AppCompatActivity {
         getAdd = bundle.getString("Address");
         getThread = bundle.getString("Thread");
 
-
-
         toolbar = findViewById(R.id.tll);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -117,8 +88,6 @@ public class ConverseActivity extends AppCompatActivity {
         listModel=new ArrayList<>();
 
         connect = getAdd;
-
-
 
         floatingActionButton = findViewById(R.id.sending);
         e1 = findViewById(R.id.myEDit);
@@ -200,7 +169,7 @@ public class ConverseActivity extends AppCompatActivity {
                     tarehe = sdf.format(date);
 
 
-                    converseModel cmd1=new converseModel();
+                    InboxModel cmd1=new InboxModel();
                     cmd1.setReceived_msg(body);
                     cmd1.setSent_msg(body);
                     cmd1.setName_sender(address);
@@ -221,7 +190,7 @@ public class ConverseActivity extends AppCompatActivity {
 
             }
 
-            adapter=new converseAdapter(getApplicationContext(),listModel);
+            adapter=new InboxAdapter(getApplicationContext(),listModel);
             adapter.notifyDataSetChanged();
             recyclerView.setAdapter(adapter);
             recyclerView.scrollToPosition(listModel.size()-1);
@@ -298,7 +267,7 @@ public class ConverseActivity extends AppCompatActivity {
                 switch (getResultCode()) {
 
                     case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(),"Sms Sent", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(),"ConversationModel Sent", Toast.LENGTH_LONG).show();
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                         Toast.makeText(getBaseContext(),"Error try Again", Toast.LENGTH_LONG).show();
