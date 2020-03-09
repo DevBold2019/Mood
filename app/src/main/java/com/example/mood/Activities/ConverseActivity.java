@@ -4,10 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -16,12 +18,17 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.telephony.SmsManager;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -46,11 +53,11 @@ public class ConverseActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     List<InboxModel> listModel;
-    public String getAdd,getThread;
+    public String getAdd, getThread;
     String connect;
     EditText e1;
     SmsManager smsManager;
-    FloatingActionButton floatingActionButton;
+    FloatingActionButton floatingActionButton,sim1,sim2;
     RecyclerView recyclerView;
     Cursor cursor, curse;
     ContentResolver cr;
@@ -65,6 +72,10 @@ public class ConverseActivity extends AppCompatActivity {
     String name;
     String tarehe;
     public String add;
+    CardView cardView;
+    SubscriptionInfo simInfo1;
+    SubscriptionInfo simInfo2;
+    PendingIntent SentpendingIntent,DeliverypendingIntent;
 
     @SuppressLint("RestrictedApi")
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -85,15 +96,22 @@ public class ConverseActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        listModel=new ArrayList<>();
+        listModel = new ArrayList<>();
 
         connect = getAdd;
 
         floatingActionButton = findViewById(R.id.sending);
+
+        sim1 = findViewById(R.id.sim1_button);
+        sim2 = findViewById(R.id.sim2_button);
+
         e1 = findViewById(R.id.myEDit);
-        recyclerView=findViewById(R.id.converseecycler);
+        recyclerView = findViewById(R.id.converseecycler);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setHasFixedSize(false);
+
+
+        cardView=findViewById(R.id.chooseSimcard);
 
         e1.setOnTouchListener(new View.OnTouchListener() {
 
@@ -114,108 +132,150 @@ public class ConverseActivity extends AppCompatActivity {
         getContacts();
 
 
+        e1.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                checkText();
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                floatingActionButton.setImageResource(R.drawable.ic_send_black_24dp);
+                checkText();
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                floatingActionButton.setImageResource(R.drawable.ic_send_black_24dp);
+
+                checkText();
+
+
+            }
+        });
+
+
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //If edit text is Empty don't send the message
                 if (e1.getText().toString().trim().isEmpty()) {
-                    e1.setError("Can't send empty Text");
+
+                    e1.setError("Empty !!");
                     return;
 
                 }
-                 sendSms();
+                sendSms();
 
             }
         });
 
+        floatingActionButton.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                Toast.makeText(getApplicationContext(),"Choose a SimCard to send Sms",Toast.LENGTH_LONG).show();
+                cardView.setVisibility(View.VISIBLE);
+
+
+                return false;
+            }
+        });
+
+
+
     }
 
-        public void loadSms(){
+    public void loadSms() {
 
-            testList=new ArrayList<>();
+        testList = new ArrayList<>();
 
-            Uri uri=Uri.parse("content://sms/");
+        Uri uri = Uri.parse("content://sms/");
 
-            cr=getApplicationContext().getContentResolver();
-            cursor=cr.query(uri,null,"thread_id="+connect,null,"date asc");
+        cr = getApplicationContext().getContentResolver();
+        cursor = cr.query(uri, null, "thread_id=" + connect, null, "date asc");
 
-            if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
 
-                do{
+            do {
 
-                    body=cursor.getString(cursor.getColumnIndexOrThrow("body"));
-                    address=cursor.getString(cursor.getColumnIndexOrThrow("address"));
-                    date=cursor.getLong(cursor.getColumnIndexOrThrow("date"));
-                    type=cursor.getString(cursor.getColumnIndexOrThrow("type"));
+                body = cursor.getString(cursor.getColumnIndexOrThrow("body"));
+                address = cursor.getString(cursor.getColumnIndexOrThrow("address"));
+                date = cursor.getLong(cursor.getColumnIndexOrThrow("date"));
+                type = cursor.getString(cursor.getColumnIndexOrThrow("type"));
 
-                    add=address;
+                add = address;
 
-                    switch (type){
+                switch (type) {
 
-                        case "1" :
-                            getType="1";
-                            break;
-                        case "2":
-                            getType="2";
-                            break;
+                    case "1":
+                        getType = "1";
+                        break;
+                    case "2":
+                        getType = "2";
+                        break;
 
-                    }
-                   Date date1=new Date(date); // accept long value.
-                    tarehe = date1.toString();
+                }
+                Date date1 = new Date(date); // accept long value.
+                tarehe = date1.toString();
 
-                    java.util.Date date = new java.util.Date(date1.toString());
-                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
-                    System.out.println(sdf.format(date));
-                    tarehe = sdf.format(date);
-
-
-                    InboxModel cmd1=new InboxModel();
-                    cmd1.setReceived_msg(body);
-                    cmd1.setSent_msg(body);
-                    cmd1.setName_sender(address);
-                    cmd1.setType(getType);
-                    cmd1.setTime_receivd(tarehe);
-                    cmd1.setTime_sent(tarehe);
-
-                    listModel.add(cmd1);
+                java.util.Date date = new java.util.Date(date1.toString());
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                System.out.println(sdf.format(date));
+                tarehe = sdf.format(date);
 
 
-                }while(cursor.moveToNext());
+                InboxModel cmd1 = new InboxModel();
+                cmd1.setReceived_msg(body);
+                cmd1.setSent_msg(body);
+                cmd1.setName_sender(address);
+                cmd1.setType(getType);
+                cmd1.setTime_receivd(tarehe);
+                cmd1.setTime_sent(tarehe);
+
+                listModel.add(cmd1);
 
 
-            }
-            if (cursor==null){
-
-                cursor.close();
-
-            }
-
-            adapter=new InboxAdapter(getApplicationContext(),listModel);
-            adapter.notifyDataSetChanged();
-            recyclerView.setAdapter(adapter);
-            recyclerView.scrollToPosition(listModel.size()-1);
-
+            } while (cursor.moveToNext());
 
 
         }
+        if (cursor == null) {
+
+            cursor.close();
+
+        }
+
+        adapter = new InboxAdapter(getApplicationContext(), listModel);
+        adapter.notifyDataSetChanged();
+        recyclerView.setAdapter(adapter);
+        recyclerView.scrollToPosition(listModel.size() - 1);
+
+
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void getContacts(){
+    public void getContacts() {
 
         // encode the phone number and build the filter URI
         Uri contactUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(address));
 
-        ContentResolver ctrs=getApplicationContext().getContentResolver();
+        ContentResolver ctrs = getApplicationContext().getContentResolver();
         Objects.requireNonNull(getSupportActionBar()).setTitle(add);
 
-        curse = ctrs.query(contactUri, null, null, null,null);
+        curse = ctrs.query(contactUri, null, null, null, null);
 
-        if (curse !=null) {
+        if (curse != null) {
 
             curse.moveToFirst();
 
         }
-        if (  curse.moveToFirst()) {
+        if (curse.moveToFirst()) {
 
             do {
 
@@ -243,59 +303,62 @@ public class ConverseActivity extends AppCompatActivity {
     }
 
 
-    public void sendSms(){
-
-        loadSms();
+    public void sendSms() {
 
         String SENT = "Message Sent";
         String DELIVERED = "Message Delivered";
+        final String myMessage = e1.getText().toString();
 
-        PendingIntent SentpendingIntent = PendingIntent.getBroadcast(ConverseActivity.this, 0, new Intent(SENT), 0);
-        PendingIntent DelpendingIntent = PendingIntent.getBroadcast(ConverseActivity.this, 0, new Intent(DELIVERED), 0);
 
-        String myMessage = e1.getText().toString();
+        SentpendingIntent = PendingIntent.getBroadcast(ConverseActivity.this, 0, new Intent(SENT), 0);
+        DeliverypendingIntent = PendingIntent.getBroadcast(ConverseActivity.this, 0, new Intent(DELIVERED), 0);
 
         smsManager = SmsManager.getDefault();
-        smsManager.sendTextMessage(address, null, myMessage, SentpendingIntent, DelpendingIntent);
+        smsManager.sendTextMessage(address, null, myMessage, SentpendingIntent, DeliverypendingIntent);
         loadSms();
         e1.getText().clear();
 
-        // SEND BroadcastReceiver
+
+
+
+        // SEND BroadcastReceiver checks if there's network for sending
         BroadcastReceiver sendSMS = new BroadcastReceiver() {
+
             @Override
             public void onReceive(Context arg0, Intent arg1) {
                 switch (getResultCode()) {
 
                     case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(),"ConversationModel Sent", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "Message Sent", Toast.LENGTH_LONG).show();
+                        loadSms();
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        Toast.makeText(getBaseContext(),"Error try Again", Toast.LENGTH_LONG).show();
-
+                        Toast.makeText(getBaseContext(), "Error try Again", Toast.LENGTH_LONG).show();
                         break;
                     case SmsManager.RESULT_ERROR_NO_SERVICE:
-                        Toast.makeText(getBaseContext(),"No service Try again", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "No service Try again", Toast.LENGTH_LONG).show();
                         break;
                     case SmsManager.RESULT_ERROR_NULL_PDU:
-                        Toast.makeText(getBaseContext(),"Failed", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_LONG).show();
                         break;
                     case SmsManager.RESULT_ERROR_RADIO_OFF:
-                        Toast.makeText(getBaseContext(),"Can't Send in flight mode", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "Can't Send Sms in flight mode", Toast.LENGTH_LONG).show();
                         break;
                 }
             }
         };
 
-        // DELIVERY BroadcastReceiver
+        // DELIVERY BroadcastReceiver checks delivery Status of the message
         BroadcastReceiver deliverSMS = new BroadcastReceiver() {
             @Override
             public void onReceive(Context arg0, Intent arg1) {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(),"Delivered", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "Delivered", Toast.LENGTH_LONG).show();
+
                         break;
                     case Activity.RESULT_CANCELED:
-                        Toast.makeText(getBaseContext(),"Not Delivered", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "Not Delivered", Toast.LENGTH_LONG).show();
                         break;
                 }
             }
@@ -303,26 +366,69 @@ public class ConverseActivity extends AppCompatActivity {
         registerReceiver(sendSMS, new IntentFilter(SENT));
         registerReceiver(deliverSMS, new IntentFilter(DELIVERED));
 
-       /* String smsText = getSmsText();
 
+
+        //Sim Card Selection For Sending Sms
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
             SubscriptionManager localSubscriptionManager = SubscriptionManager.from(getApplicationContext());
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (checkSelfPermission(Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    Activity#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for Activity#requestPermissions for more details.
+                    return;
+                }
+            }
             if (localSubscriptionManager.getActiveSubscriptionInfoCount() > 1) {
+
                 List localList = localSubscriptionManager.getActiveSubscriptionInfoList();
 
-                SubscriptionInfo simInfo1 = (SubscriptionInfo) localList.get(0);
-                SubscriptionInfo simInfo2 = (SubscriptionInfo) localList.get(1);
+               simInfo1 = (SubscriptionInfo) localList.get(0);
+               simInfo2 = (SubscriptionInfo) localList.get(1);
+
 
                 //SendSMS From SIM One
-                SmsManager.getSmsManagerForSubscriptionId(simInfo1.getSubscriptionId()).sendTextMessage(customer.getMobile(), null, smsText, sentPI, deliveredPI);
+                sim1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        cardView.setVisibility(View.INVISIBLE);
+                        Toast.makeText(getApplicationContext(),"Sim card 1 chosen",Toast.LENGTH_LONG).show();
+                        SmsManager.getSmsManagerForSubscriptionId(simInfo1.getSubscriptionId()).sendTextMessage(address, null, myMessage, SentpendingIntent, DeliverypendingIntent);
+
+                    }
+                });
+
 
                 //SendSMS From SIM Two
-                SmsManager.getSmsManagerForSubscriptionId(simInfo2.getSubscriptionId()).sendTextMessage(customer.getMobile(), null, smsText, sentPI, deliveredPI);
+                sim2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        cardView.setVisibility(View.INVISIBLE);
+                        Toast.makeText(getApplicationContext(),"Sim card 2 chosen",Toast.LENGTH_LONG).show();
+
+                        SmsManager.getSmsManagerForSubscriptionId(simInfo2.getSubscriptionId()).sendTextMessage(address, null, myMessage, SentpendingIntent, DeliverypendingIntent);
+
+
+
+
+                    }
+                });
+
+
+
+
+
             }
-        } else {
-            SmsManager.getDefault().sendTextMessage(customer.getMobile(), null, smsText, sentPI, deliveredPI);
-            Toast.makeText(getBaseContext(), R.string.sms_sending, Toast.LENGTH_SHORT).show();
-        }*/
+
+
+        }
+
 
     }
 
@@ -372,6 +478,22 @@ public class ConverseActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    public void checkText(){
+
+
+        if (e1.getText().toString().trim().isEmpty()){
+
+            floatingActionButton.setImageResource(R.drawable.ic_keyboard_voice_black_24dp);
+        }
+
+
+
+    }
+
+
+
+
 
     @Override
     protected void onStart() {

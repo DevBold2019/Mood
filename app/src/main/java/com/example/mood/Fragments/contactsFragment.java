@@ -2,6 +2,7 @@ package com.example.mood.Fragments;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,7 +26,12 @@ import com.example.mood.Model_Classes.ContactsModel;
 import com.example.mood.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+
+import pub.devrel.easypermissions.AfterPermissionGranted;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 
 public class contactsFragment extends Fragment {
 
@@ -35,6 +42,7 @@ public class contactsFragment extends Fragment {
     String name, number;
     ConstraintLayout layout;
     int photo;
+    String[] perms;
 
 
     @Nullable
@@ -49,7 +57,7 @@ public class contactsFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        checkPermission();
+        loadContacts();
 
 
         return view;
@@ -67,9 +75,11 @@ public class contactsFragment extends Fragment {
             number = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
             photo= cursor.getInt(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.PHOTO_URI));
 
+
+
             if (photo == 0) {
 
-                photo = R.drawable.group;
+                photo = R.drawable.sms;
 
             } else if (photo != 0){
 
@@ -102,25 +112,6 @@ public class contactsFragment extends Fragment {
 
     }
 
-    private void checkPermission(){
-
-        String[]allow ={Manifest.permission.READ_SMS,Manifest.permission.READ_CONTACTS,Manifest.permission.SEND_SMS};
-
-        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), String.valueOf(allow)) == PackageManager.PERMISSION_GRANTED){
-
-            layout.setVisibility(View.GONE);
-            recyclerView.setVisibility(View.VISIBLE);
-
-            loadContacts();
-
-        }else {
-
-            layout.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
 
 
-        }
-
-
-    }
 }

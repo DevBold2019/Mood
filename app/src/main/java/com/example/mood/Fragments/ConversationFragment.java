@@ -117,6 +117,10 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
             thread_id[i] = c.getString(c.getColumnIndexOrThrow("thread_id"));
             snippet[i] = c.getString(c.getColumnIndexOrThrow("snippet"));
             android.util.Log.i("COLUMNS", Arrays.toString(c.getColumnNames()));
+
+            System.out.println(Arrays.toString(new String[]{"" + Arrays.toString(c.getColumnNames())}));
+
+
             // date[i] = c.getString(c.getColumnIndexOrThrow("date"));
 
             mer = thread_id[i];
@@ -285,11 +289,15 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
 
     @Override
     public void onResume() {
-        new ConversationFragment();
+        getConversations();
         super.onResume();
     }
 
-
+    @Override
+    public void onStart() {
+        getConversations();
+        super.onStart();
+    }
 }
 
 

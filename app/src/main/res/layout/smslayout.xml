@@ -10,7 +10,6 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="#111"
         android:id="@+id/cardy">
 
      <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,7 +41,7 @@
              app:layout_constraintStart_toEndOf="@+id/picha"
              app:layout_constraintRight_toRightOf="@+id/picha"
              app:layout_constraintTop_toTopOf="parent"
-             android:textColor="#fff"
+             android:textColor="#111"
              android:padding="6dp"
              android:textStyle="bold"
              android:textSize="14sp"
@@ -62,7 +61,7 @@
              app:layout_constraintRight_toRightOf="@+id/jina"
              app:layout_constraintTop_toTopOf="parent"
              android:gravity="start|center"
-             android:textColor="#fff"
+             android:textColor="#111"
              android:layout_margin="15dp"
              android:inputType="datetime"
              android:hint="10:00pm" />
@@ -76,7 +75,7 @@
              app:layout_constraintStart_toEndOf="@+id/picha"
              android:maxWidth="230dp"
              android:textSize="13sp"
-             android:textColor="#fff"
+             android:textColor="#111"
              android:maxLines="1"
              android:padding="8dp"
              android:maxHeight="800dp"
@@ -92,9 +91,8 @@
              android:layout_margin="10dp"
              android:gravity="center"
              android:hint="200"
-             android:textStyle="italic"
              android:drawableRight="@drawable/ic_email_black_24dp"
-             android:textColor="#fff"
+             android:textColor="#111"
              android:textSize="12sp"
              android:textColorHint="#000"
              android:maxHeight="60dp"

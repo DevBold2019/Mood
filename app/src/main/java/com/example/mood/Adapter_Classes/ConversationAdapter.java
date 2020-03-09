@@ -123,7 +123,7 @@ public class ConversationAdapter extends RecyclerView.Adapter<ConversationAdapte
 
                 for (ConversationModel model : myList ){
 
-                    if (model.get_address().contains(getSearchedText)){
+                    if (model.get_msg().contains(getSearchedText)){
 
                         myFilteredList.add(model);
                         Toast.makeText(context,"Match Found",Toast.LENGTH_LONG).show();

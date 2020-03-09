@@ -28,7 +28,7 @@ public class MainUi extends AppCompatActivity {
         toolbar=findViewById(R.id.myBar);
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("");
+
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
 
@@ -45,10 +45,12 @@ public class MainUi extends AppCompatActivity {
 
                       case R.id.Message:
                           currentFragment=new ConversationFragment();
+                          getSupportActionBar().setTitle("Messages");
                           break;
 
                       case R.id.Contact:
                           currentFragment=new contactsFragment();
+                          getSupportActionBar().setTitle("Contacts");
                           break;
 
 
