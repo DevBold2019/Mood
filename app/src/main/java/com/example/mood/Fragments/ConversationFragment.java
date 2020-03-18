@@ -97,6 +97,7 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
 
         Uri SMS_INBOX = Uri.parse("content://sms/conversations/");
 
+
         Cursor c = getActivity().getContentResolver().query(SMS_INBOX, null, null, null, "date desc");
 
 
@@ -118,9 +119,7 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
             snippet[i] = c.getString(c.getColumnIndexOrThrow("snippet"));
             android.util.Log.i("COLUMNS", Arrays.toString(c.getColumnNames()));
 
-            System.out.println(Arrays.toString(new String[]{"" + Arrays.toString(c.getColumnNames())}));
-
-
+           // System.out.println(Arrays.toString(new String[]{"" + Arrays.toString(c.getColumnNames())}));
             // date[i] = c.getString(c.getColumnIndexOrThrow("date"));
 
             mer = thread_id[i];
@@ -172,13 +171,15 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
 
                 contactName = cursor.getString(cursor.getColumnIndex(ContactsContract.PhoneLookup.DISPLAY_NAME));
 
-                if (contactName == null) {
+              if (contactName != null){
 
-                    PataNamba = address;
+                  PataNamba = contactName;
 
-                    return;
-                }
-                PataNamba = contactName;
+
+            }
+
+
+
 
 
                 cursor.moveToNext();
@@ -191,6 +192,7 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
             }
 
             c.moveToNext();
+
 
 
             ConversationModel objSms = new ConversationModel();

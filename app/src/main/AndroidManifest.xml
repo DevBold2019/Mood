@@ -23,12 +23,9 @@
         android:largeHeap="true"
         android:roundIcon="@drawable/sms"
         android:supportsRtl="true"
-        android:windowSoftInputMode="stateAlwaysHidden"
+        android:windowSoftInputMode="adjustPan"
         android:isScrollContainer="false"
         android:theme="@style/AppTheme">
-
-        <receiver
-            android:name=".BroadCast_Receivers.BroadCastService"></receiver>
 
         <activity
             android:name=".Activities.profileActivity"
@@ -49,10 +46,8 @@
         </activity>
 
         <receiver
-            android:name=".BroadCast_Receivers.MessageReceived"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter android:priority="999">
+            android:name=".BroadCast_Receivers.MessageReceived">
+            <intent-filter >
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>

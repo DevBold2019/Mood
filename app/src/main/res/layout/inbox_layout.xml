@@ -5,8 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="4dp">
+    android:layout_height="wrap_content">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -17,18 +16,7 @@
         android:src="@drawable/sms"
         android:id="@+id/SendersPic"
         android:padding="5dp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:textSize="12sp"
-        android:maxWidth="200dp"
-        android:maxLines="2"
-        android:id="@+id/SendersName"
-        app:layout_constraintLeft_toRightOf="@+id/SendersPic"
-        android:layout_marginLeft="2dp"
-        android:text="Edins Gabina"
-        app:layout_constraintTop_toTopOf="parent"/>
+
 
 
     <TextView
@@ -39,12 +27,13 @@
         android:maxWidth="240dp"
         android:maxLines="12"
         app:layout_constraintLeft_toRightOf="@+id/SendersPic"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="6dp"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="1dp"
+        android:textSize="16sp"
         android:background="@drawable/sender_bg"
         android:textColor="#fff"
         android:text="Hi there"
-        app:layout_constraintTop_toBottomOf="@+id/SendersName"/>
+        app:layout_constraintTop_toBottomOf="@+id/SendersPic"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,6 +41,7 @@
         android:padding="6dp"
         android:maxLines="2"
         android:maxWidth="100dp"
+        android:textColor="#dcdcdc"
         android:textSize="10sp"
         android:id="@+id/SendersTime"
        android:layout_marginTop="1dp"

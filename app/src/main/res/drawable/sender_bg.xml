@@ -2,15 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
 
     <solid
-        android:color="#6A5ACD" />
-
-    <gradient
-        android:startColor="#4B4343"
-        android:endColor="#000"/>
-
-    <stroke
-        android:color="#fff"
-        android:width="0.5dp"/>
+        android:color="#1B1E23" />
 
 
     <corners

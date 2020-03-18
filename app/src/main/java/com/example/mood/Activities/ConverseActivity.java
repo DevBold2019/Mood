@@ -33,6 +33,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -95,6 +96,7 @@ public class ConverseActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.tll);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         listModel = new ArrayList<>();
 
@@ -252,9 +254,9 @@ public class ConverseActivity extends AppCompatActivity {
         }
 
         adapter = new InboxAdapter(getApplicationContext(), listModel);
-        adapter.notifyDataSetChanged();
         recyclerView.setAdapter(adapter);
         recyclerView.scrollToPosition(listModel.size() - 1);
+        adapter.notifyDataSetChanged();
 
 
     }
@@ -334,15 +336,19 @@ public class ConverseActivity extends AppCompatActivity {
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                         Toast.makeText(getBaseContext(), "Error try Again", Toast.LENGTH_LONG).show();
+                        loadSms();
                         break;
                     case SmsManager.RESULT_ERROR_NO_SERVICE:
                         Toast.makeText(getBaseContext(), "No service Try again", Toast.LENGTH_LONG).show();
+                        loadSms();
                         break;
                     case SmsManager.RESULT_ERROR_NULL_PDU:
                         Toast.makeText(getBaseContext(), "Failed", Toast.LENGTH_LONG).show();
+                        loadSms();
                         break;
                     case SmsManager.RESULT_ERROR_RADIO_OFF:
                         Toast.makeText(getBaseContext(), "Can't Send Sms in flight mode", Toast.LENGTH_LONG).show();
+                        loadSms();
                         break;
                 }
             }
@@ -354,11 +360,14 @@ public class ConverseActivity extends AppCompatActivity {
             public void onReceive(Context arg0, Intent arg1) {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
-                        Toast.makeText(getBaseContext(), "Delivered", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "Message Delivered", Toast.LENGTH_LONG).show();
+                        loadSms();
+                        adapter.notifyDataSetChanged();
 
                         break;
                     case Activity.RESULT_CANCELED:
                         Toast.makeText(getBaseContext(), "Not Delivered", Toast.LENGTH_LONG).show();
+                        loadSms();
                         break;
                 }
             }

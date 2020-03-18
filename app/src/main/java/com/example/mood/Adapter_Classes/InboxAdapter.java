@@ -97,13 +97,12 @@ public class InboxAdapter extends RecyclerView.Adapter {
 
             messageText =itemView.findViewById(R.id.SendersMessage);
             timeText = itemView.findViewById(R.id.SendersTime);
-            nameText = itemView.findViewById(R.id.SendersName);
+
         }
 
         void bind(InboxModel message) {
 
             timeText.setText(message.getTime_sent());
-            nameText.setText(message.getName_sender());
             messageText.setText(message.getSent_msg());
 
 
@@ -131,6 +130,10 @@ public class InboxAdapter extends RecyclerView.Adapter {
 
 
         }
+    }
+    public void reload(){
+
+
     }
 
 }

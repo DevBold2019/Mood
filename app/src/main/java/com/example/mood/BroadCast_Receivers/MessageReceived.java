@@ -19,39 +19,48 @@ public class MessageReceived extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         Bundle bundle=intent.getExtras();
-        SmsMessage [] messages;
-        String mystring="";
+        SmsMessage  smsmessages;
+        String message="";
+        String sendersNumber="";
 
         if (bundle !=null){
 
-            Object[]objects=(Object[])bundle.get("pdus");
-            messages=new SmsMessage[objects !=null ? objects.length:0];
+            Object [] objects=(Object[])bundle.get("pdus");
 
-            for (int i=0; i<messages.length; i++){
-                messages [i]=SmsMessage.createFromPdu((byte[])( objects !=null ? objects[i] : null));
-                mystring +=messages[i].getOriginatingAddress(); mystring +=":"; mystring +=messages [i] .getMessageBody(); mystring +="\n";
+            for (int i=0; i<objects.length; i++){
 
+                smsmessages =SmsMessage.createFromPdu((byte[]) objects[i] );
 
-                Notification notification = null;
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
-                    notification = new Notification.Builder(context)
-                            .setContentText(messages[i].getMessageBody())
-                            .setContentTitle(messages[i].getOriginatingAddress())
-                            .setSmallIcon(R.drawable.chatt)
-                            .setStyle(new Notification.BigTextStyle().bigText(messages[i].getMessageBody()))
-                            .build();
-                }
-                NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
-                notification.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                notificationManagerCompat.notify(1000, notification);
+                sendersNumber +=smsmessages.getOriginatingAddress();
+                message =smsmessages.getMessageBody();
 
 
 
             }
+            Toast.makeText(context,"Message \t :"+message+"\tFrom\t"+sendersNumber,Toast.LENGTH_SHORT).show();
+
+
+            Notification notification = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN) {
+                notification = new Notification.Builder(context)
+                        .setContentText(message)
+                        .setContentTitle(sendersNumber)
+                        .setSmallIcon(R.drawable.sms)
+                        .setStyle(new Notification.BigTextStyle().bigText(message))
+                        .build();
+            }
+            NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
+            notification.sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+            notificationManagerCompat.notify(1000, notification);
+
+
+
+
 
             Intent intent1=new Intent();
-            intent.setAction("SMS_RECEIVED_ACTION");
-            intent1.putExtra("message",mystring);
+            intent1.setAction("SMS_RECEIVED_ACTION");
+            intent1.putExtra("message",message);
+            intent1.putExtra("number",sendersNumber);
             context.sendBroadcast(intent1);
 
         }

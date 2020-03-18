@@ -10,6 +10,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:cardBackgroundColor="#1B1E23"
         android:id="@+id/cardy">
 
      <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,11 +42,11 @@
              app:layout_constraintStart_toEndOf="@+id/picha"
              app:layout_constraintRight_toRightOf="@+id/picha"
              app:layout_constraintTop_toTopOf="parent"
-             android:textColor="#111"
+             android:textColor="#fff"
              android:padding="6dp"
              android:textStyle="bold"
              android:textSize="14sp"
-             android:textColorHint="#000"
+             android:textColorHint="#fff"
              android:gravity="start|center"
              android:layout_marginLeft="20dp"
              android:layout_marginStart="20dp"
@@ -75,12 +76,13 @@
              app:layout_constraintStart_toEndOf="@+id/picha"
              android:maxWidth="230dp"
              android:textSize="13sp"
-             android:textColor="#111"
+             android:textColor="#fff"
              android:maxLines="1"
              android:padding="8dp"
              android:maxHeight="800dp"
              android:gravity="start|center"
              android:layout_margin="10dp"
+             android:textColorHint="#fff"
              android:hint="message" />
 
 
@@ -94,7 +96,7 @@
              android:drawableRight="@drawable/ic_email_black_24dp"
              android:textColor="#111"
              android:textSize="12sp"
-             android:textColorHint="#000"
+             android:textColorHint="#fff"
              android:maxHeight="60dp"
              android:padding="4dp"
              android:maxLength="70"
