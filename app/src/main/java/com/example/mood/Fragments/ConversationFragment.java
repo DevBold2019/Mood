@@ -58,6 +58,8 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
 
         context = getActivity();
 
+        conversationModelLists = new ArrayList<>();
+
         recyclerView = view.findViewById(R.id.recyclerV);
         layout = view.findViewById(R.id.permissionLayout);
         searchView=view.findViewById(R.id.conversationSearchView);
@@ -95,6 +97,8 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
 
     private void getConversations() {
 
+        conversationModelLists.clear();
+
         Uri SMS_INBOX = Uri.parse("content://sms/conversations/");
 
 
@@ -105,9 +109,6 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
         String snippet[] = new String[c.getCount()];
         String thread_id[] = new String[c.getCount()];
         String date[] = new String[c.getCount()];
-
-
-        conversationModelLists = new ArrayList<>();
 
 
         c.moveToFirst();
@@ -235,7 +236,6 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
             layout.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
 
-            Toast.makeText(getContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
 
            getConversations();
 

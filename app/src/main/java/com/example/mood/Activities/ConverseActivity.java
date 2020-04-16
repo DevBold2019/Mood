@@ -46,6 +46,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -99,6 +100,7 @@ public class ConverseActivity extends AppCompatActivity {
 
 
         listModel = new ArrayList<>();
+
 
         connect = getAdd;
 
@@ -173,6 +175,7 @@ public class ConverseActivity extends AppCompatActivity {
 
                 }
                 sendSms();
+                loadSms();
 
             }
         });
@@ -195,12 +198,16 @@ public class ConverseActivity extends AppCompatActivity {
 
     public void loadSms() {
 
-        testList = new ArrayList<>();
+        listModel.clear();
+
 
         Uri uri = Uri.parse("content://sms/");
 
         cr = getApplicationContext().getContentResolver();
         cursor = cr.query(uri, null, "thread_id=" + connect, null, "date asc");
+
+        System.out.println(Arrays.toString(new String[]{"" + Arrays.toString(cursor.getColumnNames())}));
+      // Toast.makeText(getApplicationContext(),""+Arrays.toString(new String[]{"" + Arrays.toString(cursor.getColumnNames())}),Toast.LENGTH_LONG).show();
 
         if (cursor.moveToFirst()) {
 
@@ -317,9 +324,10 @@ public class ConverseActivity extends AppCompatActivity {
 
         smsManager = SmsManager.getDefault();
         smsManager.sendTextMessage(address, null, myMessage, SentpendingIntent, DeliverypendingIntent);
-        loadSms();
+
         e1.getText().clear();
 
+        listModel.clear();
 
 
 
@@ -335,7 +343,7 @@ public class ConverseActivity extends AppCompatActivity {
                         loadSms();
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
-                        Toast.makeText(getBaseContext(), "Error try Again", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(), "Recharge and Send Later", Toast.LENGTH_LONG).show();
                         loadSms();
                         break;
                     case SmsManager.RESULT_ERROR_NO_SERVICE:
@@ -350,6 +358,8 @@ public class ConverseActivity extends AppCompatActivity {
                         Toast.makeText(getBaseContext(), "Can't Send Sms in flight mode", Toast.LENGTH_LONG).show();
                         loadSms();
                         break;
+
+
                 }
             }
         };
@@ -361,13 +371,12 @@ public class ConverseActivity extends AppCompatActivity {
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
                         Toast.makeText(getBaseContext(), "Message Delivered", Toast.LENGTH_LONG).show();
-                        loadSms();
                         adapter.notifyDataSetChanged();
 
                         break;
                     case Activity.RESULT_CANCELED:
                         Toast.makeText(getBaseContext(), "Not Delivered", Toast.LENGTH_LONG).show();
-                        loadSms();
+                        adapter.notifyDataSetChanged();
                         break;
                 }
             }

@@ -18,6 +18,7 @@ import android.text.TextUtils;
 import android.view.View;
 
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.mood.R;
@@ -39,7 +40,7 @@ public class inboxActivity extends AppCompatActivity {
 
     Toolbar toolbar;
     EditText editText;
-    FloatingActionButton fab;
+    ImageButton fab;
     CircleImageView imageView;
 
     String username,Number;

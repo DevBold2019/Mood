@@ -7,84 +7,132 @@
     android:layout_height="match_parent"
     tools:context=".Activities.MainActivity">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="20dp" />
 
 
-    <TextView
-        android:layout_width="31dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="20dp"
-        android:layout_marginRight="20dp"
-        android:text="@string/TvSkip"
-        android:textColor="#fff"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:id="@+id/skip"
-        app:layout_constraintEnd_toEndOf="@id/vpg"
-        app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="31dp"
+            android:layout_height="21dp"
+            android:layout_marginTop="48dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:text="@string/TvSkip"
+            android:textColor="#fff"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:id="@+id/skip"
+            app:layout_constraintEnd_toEndOf="@id/vpg"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/vpg"
-        android:layout_width="wrap_content"
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/vpg"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/tabs"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginBottom="100dp"
+            app:tabIndicatorColor="#778899"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+        </com.google.android.material.tabs.TabLayout>
+
+        <Button
+            android:id="@+id/buttonGet"
+            android:layout_width="115dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp"
+            android:text="@string/Button"
+            android:visibility="invisible"
+            android:background="#6A5ACD"
+            android:textColor="#fff"
+            android:layout_marginTop="10dp"
+            android:onClick="load"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/vpg" />
+
+        <Button
+            android:id="@+id/button3"
+            android:layout_width="88dp"
+            android:background="@drawable/ui_bg"
+            android:layout_height="48dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:drawableEnd="@drawable/ic_arrow_forward"
+            android:drawableRight="@drawable/ic_arrow_forward"
+            android:text="@string/Nextbtn"
+            android:textColor="#fff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:ignore="RtlHardcoded" />
+
+
+
+
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/tabs"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        android:background="#f2f2f2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        android:visibility="gone"
+        android:id="@+id/permissionLayout">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabs"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginBottom="100dp"
-        app:tabIndicatorColor="#778899"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:id="@+id/permissionImage"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:src="@drawable/permission_image"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-    </com.google.android.material.tabs.TabLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@+id/permissionImage"
+            android:text="For this App to work\t\n You need to allow permissions"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:padding="8dp"
+            android:textColor="#000"
+            android:layout_margin="10dp"/>
 
-    <Button
-        android:id="@+id/buttonGet"
-        android:layout_width="115dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="@string/Button"
-        android:visibility="invisible"
-        android:background="#6A5ACD"
-        android:textColor="#fff"
-        android:layout_marginTop="10dp"
-        android:onClick="load"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/vpg" />
 
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="88dp"
-        android:background="@drawable/ui_bg"
-        android:layout_height="48dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="20dp"
-        android:drawableEnd="@drawable/ic_arrow_forward"
-        android:drawableRight="@drawable/ic_arrow_forward"
-        android:text="@string/Nextbtn"
-        android:textColor="#fff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="RtlHardcoded" />
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Accept"
+            android:id="@+id/acceptPermissionButton"
+            android:textColor="#fff"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:background="@color/colorPrimaryDark"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
