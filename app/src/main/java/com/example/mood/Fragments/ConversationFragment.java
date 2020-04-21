@@ -90,6 +90,8 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
         CheckPermissions();
 
 
+
+
         return view;
 
 
@@ -203,10 +205,12 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
             objSms.set_date(count[i]);
             objSms.set_id(mer);
             objSms.setThread(mer);
-            objSms.set_senderName(String.valueOf(PataNamba.toString().charAt(0) + "" + PataNamba.toString().charAt(1)));
+            objSms.set_senderName(String.valueOf(PataNamba.toString().charAt(0) ));
 
 
             conversationModelLists.add(objSms);
+
+
 
 
         }
@@ -220,6 +224,15 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
         myadapter = new ConversationAdapter(getActivity(), conversationModelLists);
         myadapter.notifyDataSetChanged();
         recyclerView.setAdapter(myadapter);
+
+        //Toast.makeText(context,""+conversationModelLists.size(),Toast.LENGTH_LONG).show();
+
+        if (conversationModelLists.size() <= 0){
+
+            Toast.makeText(context,"No messages Yet !!!",Toast.LENGTH_LONG).show();
+
+
+        }
 
     }
 
@@ -235,6 +248,8 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
 
             layout.setVisibility(View.GONE);
             recyclerView.setVisibility(View.VISIBLE);
+
+
 
 
            getConversations();

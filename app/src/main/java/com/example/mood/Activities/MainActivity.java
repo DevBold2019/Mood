@@ -16,6 +16,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,16 +43,9 @@ public class MainActivity extends AppCompatActivity {
     TabLayout tabLayout;
     TextView textView;
     ConstraintLayout constraintLayout;
-    ConstraintLayout constraintLayout1;
 
     int position = 0;
     String[] perms;
-
-
-    int READ_CONTACTS_CODE = 1;
-    int READ_SMS_CODE = 2;
-    int SEND_SMS_CODE = 3;
-    int GENERAL_CODE = 8;
 
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -65,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         //getSupportActionBar().hide();
-        //getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
 
         viewPager = findViewById(R.id.vpg);
@@ -226,9 +220,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (EasyPermissions.hasPermissions(getApplicationContext(), perms)) {
 
-            Toast.makeText(getApplicationContext(), "Permission Granted", Toast.LENGTH_SHORT).show();
-            savedata();
 
+                   Intent intent = new Intent(MainActivity.this, MainUi.class);
+                    savedata();
+                    startActivity(intent);
+                    finish();
 
         } else {
 

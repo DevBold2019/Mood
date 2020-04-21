@@ -5,6 +5,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -19,7 +24,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.database.Cursor;
+import android.media.MediaPlayer;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +43,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 
@@ -42,6 +51,7 @@ import com.example.mood.Adapter_Classes.InboxAdapter;
 import com.example.mood.Model_Classes.InboxModel;
 import com.example.mood.Model_Classes.testingModel;
 import com.example.mood.R;
+import com.example.mood.updateConvos;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
@@ -61,6 +71,11 @@ public class ConverseActivity extends AppCompatActivity {
     SmsManager smsManager;
     FloatingActionButton floatingActionButton,sim1,sim2;
     RecyclerView recyclerView;
+     MediaPlayer mp;
+     ImageButton imageButton;
+
+    Notification notification ;
+
     Cursor cursor, curse;
     ContentResolver cr;
     public String ContactName, contactId;
@@ -86,6 +101,9 @@ public class ConverseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_converse);
+        ConverseActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        //startService(new Intent(this, updateConvos.class));
 
 
         Intent intent = getIntent();
@@ -101,6 +119,8 @@ public class ConverseActivity extends AppCompatActivity {
 
         listModel = new ArrayList<>();
 
+          mp = MediaPlayer.create(this, R.raw.eventually);
+
 
         connect = getAdd;
 
@@ -108,6 +128,9 @@ public class ConverseActivity extends AppCompatActivity {
 
         sim1 = findViewById(R.id.sim1_button);
         sim2 = findViewById(R.id.sim2_button);
+        imageButton=findViewById(R.id.scrollButton);
+
+       // imageButton.setVisibility(View.INVISIBLE);
 
         e1 = findViewById(R.id.myEDit);
         recyclerView = findViewById(R.id.converseecycler);
@@ -134,6 +157,25 @@ public class ConverseActivity extends AppCompatActivity {
 
         loadSms();
         getContacts();
+
+
+        // checking when the keyboard is open
+        e1.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+
+                if (hasFocus) {
+
+                   recyclerView.scrollToPosition(0);
+                   loadSms();
+
+                } else {
+                   loadSms();
+                }
+            }
+        });
+
+        //Toast.makeText(getApplicationContext(),""+listModel.size(),Toast.LENGTH_LONG).show();
 
 
         e1.addTextChangedListener(new TextWatcher() {
@@ -174,8 +216,11 @@ public class ConverseActivity extends AppCompatActivity {
                     return;
 
                 }
+
                 sendSms();
-                loadSms();
+
+
+              // notifyme();
 
             }
         });
@@ -198,7 +243,7 @@ public class ConverseActivity extends AppCompatActivity {
 
     public void loadSms() {
 
-        listModel.clear();
+       listModel.clear();
 
 
         Uri uri = Uri.parse("content://sms/");
@@ -328,6 +373,7 @@ public class ConverseActivity extends AppCompatActivity {
         e1.getText().clear();
 
         listModel.clear();
+        loadSms();
 
 
 
@@ -336,6 +382,7 @@ public class ConverseActivity extends AppCompatActivity {
 
             @Override
             public void onReceive(Context arg0, Intent arg1) {
+
                 switch (getResultCode()) {
 
                     case Activity.RESULT_OK:
@@ -366,21 +413,28 @@ public class ConverseActivity extends AppCompatActivity {
 
         // DELIVERY BroadcastReceiver checks delivery Status of the message
         BroadcastReceiver deliverSMS = new BroadcastReceiver() {
+
             @Override
             public void onReceive(Context arg0, Intent arg1) {
+
                 switch (getResultCode()) {
+
                     case Activity.RESULT_OK:
+
                         Toast.makeText(getBaseContext(), "Message Delivered", Toast.LENGTH_LONG).show();
+                        mp.start();
                         adapter.notifyDataSetChanged();
 
                         break;
                     case Activity.RESULT_CANCELED:
+
                         Toast.makeText(getBaseContext(), "Not Delivered", Toast.LENGTH_LONG).show();
                         adapter.notifyDataSetChanged();
                         break;
                 }
             }
         };
+
         registerReceiver(sendSMS, new IntentFilter(SENT));
         registerReceiver(deliverSMS, new IntentFilter(DELIVERED));
 
@@ -513,6 +567,8 @@ public class ConverseActivity extends AppCompatActivity {
 
 
 
+
+
     @Override
     protected void onStart() {
 
@@ -532,6 +588,68 @@ public class ConverseActivity extends AppCompatActivity {
         loadSms();
         super.onRestart();
     }
+
+
+
+    public  void  notifyme() {
+
+
+         NotificationManager mNotificationManager;
+
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(ConverseActivity.this, "notify_001");
+
+        Intent ii = new Intent(ConverseActivity.this, ConverseActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(ConverseActivity.this, 0, ii, 0);
+
+        NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
+        bigText.bigText(" SATURDAY");
+        bigText.setBigContentTitle("Today is a good day");
+        bigText.setSummaryText("Level up");
+
+        mBuilder.setContentIntent(pendingIntent);
+        mBuilder.setSmallIcon(R.mipmap.ic_launcher_round);
+        mBuilder.setContentTitle("Your Title");
+        mBuilder.setContentText("Your text");
+        mBuilder.setPriority(Notification.PRIORITY_MAX);
+        mBuilder.setStyle(bigText);
+
+        mNotificationManager = (NotificationManager) ConverseActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        // === Removed some obsoletes
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            String channelId = "Your_channel_id";
+            NotificationChannel channel = new NotificationChannel(channelId, "Channel human readable title", NotificationManager.IMPORTANCE_HIGH);
+            mNotificationManager.createNotificationChannel(channel);
+            mBuilder.setChannelId(channelId);
+        }
+
+        mNotificationManager.notify(0, mBuilder.build());
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
 
 
