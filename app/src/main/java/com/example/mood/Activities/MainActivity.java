@@ -25,6 +25,7 @@ import com.example.mood.Fragments.ConversationFragment;
 import com.example.mood.R;
 import com.example.mood.Adapter_Classes.WalkAdapter;
 import com.example.mood.Model_Classes.WalkModel;
+import com.example.mood.SplashActivity;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (getData()) {
 
-            Intent mainActivity = new Intent(MainActivity.this, MainUi.class);
+            Intent mainActivity = new Intent(MainActivity.this, SplashActivity.class);
             startActivity(mainActivity);
             finish();
 
@@ -107,21 +108,13 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
 
-        //GetStarted Button jumps to M
+        //GetStarted Button launches the permission layout
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
                 constraintLayout.setVisibility(View.VISIBLE);
                 button1.setVisibility(View.GONE);
-
-
-
-                  /*  Intent intent = new Intent(MainActivity.this, MainUi.class);
-                    savedata();
-                    startActivity(intent);
-                    finish();*/
 
 
             }
@@ -212,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //The App will only function when permissions are accepted to prevent crashing
     @AfterPermissionGranted(123)
     public void CheckPermissions() {
 
@@ -221,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
         if (EasyPermissions.hasPermissions(getApplicationContext(), perms)) {
 
 
-                   Intent intent = new Intent(MainActivity.this, MainUi.class);
+                   Intent intent = new Intent(MainActivity.this, SplashActivity.class);
                     savedata();
                     startActivity(intent);
                     finish();
@@ -242,12 +236,6 @@ public class MainActivity extends AppCompatActivity {
 
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }
-
-
-
-
-
-
 
 
 

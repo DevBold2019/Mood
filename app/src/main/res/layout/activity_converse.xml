@@ -32,7 +32,7 @@
 
         </androidx.recyclerview.widget.RecyclerView>
 
-    <ImageButton
+   <!-- <ImageButton
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:padding="5dp"
@@ -42,7 +42,7 @@
         android:id="@+id/scrollButton"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent" />-->
 
 
 

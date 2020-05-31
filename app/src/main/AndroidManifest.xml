@@ -19,25 +19,25 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/sms"
+        android:isScrollContainer="false"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:roundIcon="@drawable/sms"
         android:supportsRtl="true"
-        android:windowSoftInputMode="adjustPan"
-        android:isScrollContainer="false"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme"
+        android:windowSoftInputMode="adjustPan">
+        <activity android:name=".SplashActivity"></activity>
         <activity
             android:name=".Activities.profileActivity"
-            android:windowSoftInputMode="adjustResize|adjustPan"
-            android:parentActivityName=".Activities.ConverseActivity" />
+            android:parentActivityName=".Activities.ConverseActivity"
+            android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity
             android:name=".Activities.ConverseActivity"
             android:parentActivityName=".Activities.MainUi" />
         <activity
             android:name=".Activities.inboxActivity"
             android:parentActivityName=".Activities.MainUi" />
-        <activity android:name=".Activities.MainUi"  />
+        <activity android:name=".Activities.MainUi" />
         <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -46,16 +46,13 @@
             </intent-filter>
         </activity>
 
-        <receiver
-            android:name=".BroadCast_Receivers.MessageReceived">
-            <intent-filter >
+        <receiver android:name=".BroadCast_Receivers.MessageReceived">
+            <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
             </intent-filter>
         </receiver>
 
         <service android:name=".updateConvos" />
-
-
     </application>
 
 </manifest>

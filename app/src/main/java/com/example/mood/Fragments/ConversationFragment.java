@@ -122,7 +122,7 @@ public class ConversationFragment extends Fragment implements EasyPermissions.Pe
             snippet[i] = c.getString(c.getColumnIndexOrThrow("snippet"));
             android.util.Log.i("COLUMNS", Arrays.toString(c.getColumnNames()));
 
-           // System.out.println(Arrays.toString(new String[]{"" + Arrays.toString(c.getColumnNames())}));
+            System.out.println(Arrays.toString(new String[]{"" + Arrays.toString(c.getColumnNames())}));
             // date[i] = c.getString(c.getColumnIndexOrThrow("date"));
 
             mer = thread_id[i];

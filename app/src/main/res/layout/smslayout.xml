@@ -62,7 +62,8 @@
              app:layout_constraintRight_toRightOf="@+id/jina"
              app:layout_constraintTop_toTopOf="parent"
              android:gravity="start|center"
-             android:textColor="#111"
+             android:textColor="#fff"
+             android:visibility="gone"
              android:layout_margin="15dp"
              android:inputType="datetime"
              android:hint="10:00pm" />
@@ -94,7 +95,7 @@
              android:gravity="center"
              android:hint="200"
              android:drawableRight="@drawable/ic_email_black_24dp"
-             android:textColor="#111"
+             android:textColor="#fff"
              android:textSize="12sp"
              android:textColorHint="#fff"
              android:maxHeight="60dp"

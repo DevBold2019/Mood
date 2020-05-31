@@ -119,7 +119,7 @@ public class ConverseActivity extends AppCompatActivity {
 
         listModel = new ArrayList<>();
 
-          mp = MediaPlayer.create(this, R.raw.eventually);
+        mp = MediaPlayer.create(this, R.raw.eventually);
 
 
         connect = getAdd;
@@ -128,7 +128,7 @@ public class ConverseActivity extends AppCompatActivity {
 
         sim1 = findViewById(R.id.sim1_button);
         sim2 = findViewById(R.id.sim2_button);
-        imageButton=findViewById(R.id.scrollButton);
+
 
        // imageButton.setVisibility(View.INVISIBLE);
 
@@ -156,7 +156,7 @@ public class ConverseActivity extends AppCompatActivity {
         });
 
         loadSms();
-        getContacts();
+
 
 
         // checking when the keyboard is open
@@ -241,6 +241,7 @@ public class ConverseActivity extends AppCompatActivity {
 
     }
 
+    @SuppressLint("NewApi")
     public void loadSms() {
 
        listModel.clear();
@@ -265,6 +266,8 @@ public class ConverseActivity extends AppCompatActivity {
 
                 add = address;
 
+                getContacts(address);
+
                 switch (type) {
 
                     case "1":
@@ -287,7 +290,7 @@ public class ConverseActivity extends AppCompatActivity {
                 InboxModel cmd1 = new InboxModel();
                 cmd1.setReceived_msg(body);
                 cmd1.setSent_msg(body);
-                cmd1.setName_sender(address);
+                cmd1.setName_sender(add);
                 cmd1.setType(getType);
                 cmd1.setTime_receivd(tarehe);
                 cmd1.setTime_sent(tarehe);
@@ -313,8 +316,9 @@ public class ConverseActivity extends AppCompatActivity {
 
     }
 
+    //Getting Contact of The person the current inbox I'm in
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public void getContacts() {
+    public void getContacts(String address) {
 
         // encode the phone number and build the filter URI
         Uri contactUri = Uri.withAppendedPath(ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri.encode(address));
@@ -338,7 +342,7 @@ public class ConverseActivity extends AppCompatActivity {
                 contactId = curse.getString(curse.getColumnIndex(ContactsContract.PhoneLookup._ID));
 
                 getSupportActionBar().setTitle(ContactName);
-                getSupportActionBar().setSubtitle(address);
+                getSupportActionBar().setSubtitle(this.address);
 
                 curse.moveToNext();
 

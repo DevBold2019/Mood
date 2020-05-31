@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -92,11 +93,13 @@ public class InboxAdapter extends RecyclerView.Adapter {
 
         TextView messageText, timeText, nameText;
 
+
         SentMessageHolder(View itemView) {
             super(itemView);
 
             messageText =itemView.findViewById(R.id.SendersMessage);
             timeText = itemView.findViewById(R.id.SendersTime);
+
 
         }
 
@@ -119,6 +122,7 @@ public class InboxAdapter extends RecyclerView.Adapter {
             timeText = itemView.findViewById(R.id.mySendingTime);
 
 
+
         }
 
         void bind(InboxModel message) {
@@ -126,15 +130,11 @@ public class InboxAdapter extends RecyclerView.Adapter {
             messageText.setText(message.getSent_msg());
             timeText.setText(message.getTime_sent());
 
-            // Format the stored timestamp into a readable String using method.
 
 
         }
     }
-    public void reload(){
 
-
-    }
 
 }
 
